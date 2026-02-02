@@ -30,7 +30,38 @@ pub mod hale_solana {
         attestation.outcome_hash = Some(outcome_hash);
         attestation.status = AttestationStatus::Sealed;
         
+        emit!(AttestationSealed {
+            authority: attestation.authority,
+            intent_hash: attestation.intent_hash,
+            outcome_hash,
+        });
+
         msg!("Attestation sealed with outcome: {:?}", outcome_hash);
+        Ok(())
+    }
+
+    pub fn audit_attestation(
+        ctx: Context<AuditAttestation>,
+        report_hash: [u8; 32],
+        is_valid: bool,
+    ) -> Result<()> {
+        let attestation = &mut ctx.accounts.attestation;
+        attestation.status = if is_valid {
+            AttestationStatus::Audited
+        } else {
+            AttestationStatus::Disputed
+        };
+        attestation.report_hash = Some(report_hash);
+
+        emit!(AttestationAudited {
+            authority: attestation.authority,
+            auditor: ctx.accounts.auditor.key(),
+            intent_hash: attestation.intent_hash,
+            report_hash,
+            is_valid,
+        });
+
+        msg!("Attestation audited. Valid: {}", is_valid);
         Ok(())
     }
 }
@@ -41,7 +72,7 @@ pub struct InitializeAttestation<'info> {
     #[account(
         init,
         payer = authority,
-        space = 8 + 32 + 32 + 4 + 200 + 1 + 33 + 1, // Cap metadata_uri at 200
+        space = 8 + 32 + 32 + 4 + 200 + 1 + 33 + 33 + 1 + 1, // Increased space for hashes and bump
         seeds = [b"attestation", authority.key().as_ref(), intent_hash.as_ref()],
         bump
     )]
@@ -63,6 +94,17 @@ pub struct SealAttestation<'info> {
     pub authority: Signer<'info>,
 }
 
+#[derive(Accounts)]
+pub struct AuditAttestation<'info> {
+    #[account(
+        mut,
+        seeds = [b"attestation", attestation.authority.as_ref(), attestation.intent_hash.as_ref()],
+        bump = attestation.bump,
+    )]
+    pub attestation: Account<'info, Attestation>,
+    pub auditor: Signer<'info>,
+}
+
 #[account]
 pub struct Attestation {
     pub authority: Pubkey,
@@ -70,6 +112,7 @@ pub struct Attestation {
     pub metadata_uri: String,
     pub status: AttestationStatus,
     pub outcome_hash: Option<[u8; 32]>,
+    pub report_hash: Option<[u8; 32]>,
     pub bump: u8,
 }
 
@@ -78,4 +121,21 @@ pub enum AttestationStatus {
     Draft,
     Sealed,
     Audited,
+    Disputed,
+}
+
+#[event]
+pub struct AttestationSealed {
+    pub authority: Pubkey,
+    pub intent_hash: [u8; 32],
+    pub outcome_hash: [u8; 32],
+}
+
+#[event]
+pub struct AttestationAudited {
+    pub authority: Pubkey,
+    pub auditor: Pubkey,
+    pub intent_hash: [u8; 32],
+    pub report_hash: [u8; 32],
+    pub is_valid: bool,
 }
