@@ -12,6 +12,7 @@
   "type": "commonjs",
   "dependencies": {
     "@coral-xyz/anchor": "^0.32.1",
+    "@irys/sdk": "^0.2.11",
     "@solana/web3.js": "^1.98.4",
     "axios": "^1.13.4",
     "buffer": "^6.0.3",
