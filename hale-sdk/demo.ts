@@ -36,6 +36,13 @@ async function main() {
 
     const updatedAccount = await client.fetchAttestation(address);
     console.log("Updated Account Status:", Object.keys(updatedAccount.status)[0]);
+
+    console.log("Challenging attestation...");
+    const challengeTx = await client.challengeAttestation(keypair.publicKey, intentHash, "https://hale.evidence/suspect-activity");
+    console.log("Challenge TX:", challengeTx);
+
+    const challengedAccount = await client.fetchAttestation(address);
+    console.log("Final Account Status:", Object.keys(challengedAccount.status)[0]);
 }
 
 main().catch(console.error);

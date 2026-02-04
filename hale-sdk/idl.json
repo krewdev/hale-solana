@@ -76,6 +76,66 @@
       ]
     },
     {
+      "name": "challenge_attestation",
+      "discriminator": [
+        22,
+        204,
+        94,
+        23,
+        149,
+        115,
+        173,
+        197
+      ],
+      "accounts": [
+        {
+          "name": "attestation",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  116,
+                  116,
+                  101,
+                  115,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attestation.authority",
+                "account": "Attestation"
+              },
+              {
+                "kind": "account",
+                "path": "attestation.intent_hash",
+                "account": "Attestation"
+              }
+            ]
+          }
+        },
+        {
+          "name": "challenger",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "evidence_uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
       "name": "initialize_attestation",
       "discriminator": [
         82,
@@ -243,6 +303,19 @@
       ]
     },
     {
+      "name": "AttestationChallenged",
+      "discriminator": [
+        235,
+        251,
+        182,
+        250,
+        20,
+        229,
+        60,
+        89
+      ]
+    },
+    {
       "name": "AttestationSealed",
       "discriminator": [
         66,
@@ -254,6 +327,18 @@
         12,
         217
       ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidStatusForSeal",
+      "msg": "Attestation is not in a sealable state."
+    },
+    {
+      "code": 6001,
+      "name": "InvalidStatusForChallenge",
+      "msg": "Attestation is not in a state that can be challenged."
     }
   ],
   "types": [
@@ -310,6 +395,12 @@
             }
           },
           {
+            "name": "evidence_uri",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
             "name": "bump",
             "type": "u8"
           }
@@ -350,6 +441,35 @@
           {
             "name": "is_valid",
             "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AttestationChallenged",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "challenger",
+            "type": "pubkey"
+          },
+          {
+            "name": "intent_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "evidence_uri",
+            "type": "string"
           }
         ]
       }

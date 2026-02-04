@@ -87,7 +87,24 @@ export class HaleClient {
             .rpc();
     }
 
+    public async challengeAttestation(
+        authority: PublicKey,
+        intentHash: Buffer | Uint8Array,
+        evidenceUri: string
+    ): Promise<string> {
+        const challenger = (this.program.provider as anchor.AnchorProvider).wallet.publicKey;
+        const attestation = await this.getAttestationAddress(authority, intentHash);
+
+        return await this.program.methods
+            .challengeAttestation(evidenceUri)
+            .accounts({
+                attestation,
+                challenger,
+            } as any)
+            .rpc();
+    }
+
     public async fetchAttestation(address: PublicKey) {
-        return await this.program.account.attestation.fetch(address);
+        return await (this.program.account as any).attestation.fetch(address);
     }
 }

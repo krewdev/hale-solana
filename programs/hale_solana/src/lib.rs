@@ -64,6 +64,32 @@ pub mod hale_solana {
         msg!("Attestation audited. Valid: {}", is_valid);
         Ok(())
     }
+
+    pub fn challenge_attestation(
+        ctx: Context<ChallengeAttestation>,
+        evidence_uri: String,
+    ) -> Result<()> {
+        let attestation = &mut ctx.accounts.attestation;
+        
+        // Only allow challenging Sealed or Audited attestations
+        require!(
+            attestation.status == AttestationStatus::Sealed || attestation.status == AttestationStatus::Audited,
+            HaleError::InvalidStatusForChallenge
+        );
+
+        attestation.status = AttestationStatus::Disputed;
+        attestation.evidence_uri = Some(evidence_uri.clone());
+        
+        emit!(AttestationChallenged {
+            authority: attestation.authority,
+            challenger: ctx.accounts.challenger.key(),
+            intent_hash: attestation.intent_hash,
+            evidence_uri,
+        });
+
+        msg!("Attestation challenged by: {:?}", ctx.accounts.challenger.key());
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -72,7 +98,7 @@ pub struct InitializeAttestation<'info> {
     #[account(
         init,
         payer = authority,
-        space = 8 + 32 + 32 + 4 + 200 + 1 + 33 + 33 + 1 + 1, // Increased space for hashes and bump
+        space = 600, // Fixed size allocation to avoid calculation issues
         seeds = [b"attestation", authority.key().as_ref(), intent_hash.as_ref()],
         bump
     )]
@@ -105,6 +131,18 @@ pub struct AuditAttestation<'info> {
     pub auditor: Signer<'info>,
 }
 
+#[derive(Accounts)]
+pub struct ChallengeAttestation<'info> {
+    #[account(
+        mut,
+        seeds = [b"attestation", attestation.authority.as_ref(), attestation.intent_hash.as_ref()],
+        bump = attestation.bump,
+    )]
+    pub attestation: Account<'info, Attestation>,
+    #[account(mut)]
+    pub challenger: Signer<'info>,
+}
+
 #[account]
 pub struct Attestation {
     pub authority: Pubkey,
@@ -113,6 +151,7 @@ pub struct Attestation {
     pub status: AttestationStatus,
     pub outcome_hash: Option<[u8; 32]>,
     pub report_hash: Option<[u8; 32]>,
+    pub evidence_uri: Option<String>,
     pub bump: u8,
 }
 
@@ -138,4 +177,20 @@ pub struct AttestationAudited {
     pub intent_hash: [u8; 32],
     pub report_hash: [u8; 32],
     pub is_valid: bool,
+}
+
+#[event]
+pub struct AttestationChallenged {
+    pub authority: Pubkey,
+    pub challenger: Pubkey,
+    pub intent_hash: [u8; 32],
+    pub evidence_uri: String,
+}
+
+#[error_code]
+pub enum HaleError {
+    #[msg("Attestation is not in a sealable state.")]
+    InvalidStatusForSeal,
+    #[msg("Attestation is not in a state that can be challenged.")]
+    InvalidStatusForChallenge,
 }

@@ -28,8 +28,8 @@ export default function App() {
 
     const fetchAttestations = async () => {
         try {
-            const accounts = await program.account.attestation.all();
-            setAttestations(accounts.sort((a, b) => b.publicKey.toBase58().localeCompare(a.publicKey.toBase58())));
+            const accounts = await (program.account as any).attestation.all();
+            setAttestations(accounts.sort((a: any, b: any) => b.publicKey.toBase58().localeCompare(a.publicKey.toBase58())));
             setLoading(false);
         } catch (err) {
             console.error("Failed to fetch attestations:", err);
@@ -176,6 +176,20 @@ function AttestationCard({ attestation }: { attestation: any }) {
                         </div>
                     )}
 
+                    {account.evidenceUri && (
+                        <div className="bg-destructive/10 p-3 rounded-xl border border-destructive/20">
+                            <p className="text-[10px] uppercase text-destructive font-bold mb-1">Challenge Evidence</p>
+                            <a
+                                href={account.evidenceUri}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-xs text-destructive hover:underline flex items-center gap-1 font-mono break-all"
+                            >
+                                {account.evidenceUri} <ExternalLink className="w-3 h-3" />
+                            </a>
+                        </div>
+                    )}
+
                     <div className="pt-4 border-t border-white/5 flex items-center justify-between">
                         <a
                             href={account.metadataUri}
@@ -185,6 +199,16 @@ function AttestationCard({ attestation }: { attestation: any }) {
                         >
                             Metadata URI <ExternalLink className="w-3 h-3" />
                         </a>
+
+                        {(status === 'sealed' || status === 'audited') && (
+                            <button
+                                onClick={() => alert('In a real app, this would trigger a challenge transaction via your wallet adapter.')}
+                                className="px-3 py-1 bg-destructive/10 hover:bg-destructive/20 text-destructive rounded-lg text-xs font-bold transition-colors flex items-center gap-1"
+                            >
+                                <AlertCircle className="w-3 h-3" /> Challenge
+                            </button>
+                        )}
+
                         <button className="p-2 hover:bg-white/5 rounded-lg transition-colors opacity-0 group-hover:opacity-100">
                             <Shield className="w-4 h-4 text-gray-500" />
                         </button>

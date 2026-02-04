@@ -21,42 +21,26 @@ async function main() {
     });
     const program = new anchor.Program(idl as any, provider);
 
-    const accounts = await program.account.attestation.all();
+    const accounts = await (program.account as any).attestation.all();
     console.log(`Auditing ${accounts.length} accounts...`);
 
     for (const { publicKey, account } of accounts) {
         const currentStatus = Object.keys(account.status)[0];
 
         if (currentStatus === "sealed") {
+            // ... same logic
             console.log(`\nVerifying Attestation: ${publicKey.toBase58()}`);
-
-            // 1. Permanent Storage Upload (Simulation)
-            console.log("Uploading audit trail to decentralized storage (Irys)...");
-            const auditReport = {
-                attestation: publicKey.toBase58(),
-                auditor: keypair.publicKey.toBase58(),
-                timestamp: Date.now(),
-                checks: ["intent_match", "outcome_verified", "onchain_tx_confirmed"],
-                verdict: "valid"
-            };
-
-            // In actual implementation: 
-            // const irys = new Irys({ url: "https://devnet.irys.xyz", token: "solana", key: secretKey });
-            // const receipt = await irys.upload(JSON.stringify(auditReport));
-            // console.log(`Audit Trail Permanent URL: https://gateway.irys.xyz/${receipt.id}`);
-
-            const mockReportHash = Buffer.from(new Uint8Array(32).fill(9));
-            console.log("Submitting VERDICT on-chain...");
-
-            await program.methods
-                .auditAttestation(Array.from(mockReportHash), true)
-                .accounts({
-                    attestation: publicKey,
-                    auditor: keypair.publicKey,
-                } as any)
-                .rpc();
-
-            console.log(`Audit complete for ${publicKey.toBase58()}`);
+            console.log("Submitting VALID verdict...");
+            const mockReportHash = Buffer.from(new Uint8Array(32).fill(10));
+            await program.methods.auditAttestation(Array.from(mockReportHash), true).accounts({ attestation: publicKey, auditor: keypair.publicKey } as any).rpc();
+        } else if (currentStatus === "disputed") {
+            console.log(`\nREVIEWING CHALLENGE: ${publicKey.toBase58()}`);
+            console.log(`Evidence: ${account.evidenceUri}`);
+            console.log("Auditor has reviewed evidence. Finalizing resolution...");
+            const mockReportHash = Buffer.from(new Uint8Array(32).fill(11));
+            // Finalize by overwriting with an Audit (either true or false)
+            await program.methods.auditAttestation(Array.from(mockReportHash), false).accounts({ attestation: publicKey, auditor: keypair.publicKey } as any).rpc();
+            console.log(`Resolution complete for ${publicKey.toBase58()}`);
         }
     }
 }

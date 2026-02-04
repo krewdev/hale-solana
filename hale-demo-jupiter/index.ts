@@ -38,7 +38,7 @@ class HaleClient {
 }
 
 async function main() {
-    const connection = new Connection("http://127.0.0.1:8899", "processed");
+    const connection = new Connection("https://api.devnet.solana.com", "confirmed");
     const secretKey = JSON.parse(fs.readFileSync("/Users/krewdev/.config/solana/id.json", "utf8"));
     const keypair = Keypair.fromSecretKey(Uint8Array.from(secretKey));
     const wallet = new anchor.Wallet(keypair);

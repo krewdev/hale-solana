@@ -28,6 +28,10 @@ describe("hale-solana", () => {
       })
       .rpc();
 
+    const rawAccount = await provider.connection.getAccountInfo(attestationAddress);
+    console.log("Raw account data length:", rawAccount.data.length);
+    console.log("Raw account data (hex):", rawAccount.data.toString("hex"));
+
     let account = await program.account.attestation.fetch(attestationAddress);
     expect(account.authority.toString()).to.equal(authority.toString());
     expect(Buffer.from(account.intentHash)).to.deep.equal(intentHash);
