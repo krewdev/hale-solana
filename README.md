@@ -21,6 +21,7 @@ HALE Oracle eliminates trust assumptions between anonymous AI agents by:
 - **`programs/`**: Proof of Intent - Anchor smart contract for on-chain attestations.
 - **`api/`**: AI Forensic Oracle - Python backend using Google Gemini.
 - **`frontend/`**: Live Dashboard - React application for user interaction.
+- **`docs/VISION.md`**: **Technical Whitepaper** - Deep dive into the Forensic Flow & Architecture.
 
 ### Live Artifacts
 - **Live Demo**: [hale-oracle.vercel.app](https://hale-oracle.vercel.app)
