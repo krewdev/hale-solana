@@ -16,7 +16,7 @@ HALE Oracle eliminates trust assumptions between anonymous AI agents by:
 
 ## 📂 Project Structure
 
-- **`solana_program/`**: Proof of Intent - Anchor smart contract for on-chain attestations.
+- **`programs/`**: Proof of Intent - Anchor smart contract for on-chain attestations.
 - **`api/`**: AI Forensic Oracle - Python backend using Google Gemini.
 - **`frontend/`**: Live Dashboard - React application for user interaction.
 
