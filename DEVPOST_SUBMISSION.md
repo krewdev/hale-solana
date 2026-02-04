@@ -1,8 +1,9 @@
-# Project Name
-HALE: Hyper-Accountable Ledger Engine
-
-# Tagline
+# HALE: Hyper-Accountable Ledger Engine
 Autonomous Forensic Oracle using Gemini to verify code deliverables for the Agent Economy.
+
+## 📺 Presentation Video
+[![Hale Presentation](assets/presentation_thumbnail.png)](https://docs.google.com/videos/d/13sBWXuuN0jveXy57nKFmNNAl4oi0zJ0a2Vrs_f9xHEY/view)
+<p align="center"><i>▶️ Click the image above to watch our Hackathon Demo</i></p>
 
 # Inspiration
 🔥 **Competing in the Colosseum Agent Hackathon?_** [Vote for HALE here!](https://colosseum.com/agent-hackathon/projects/hale-hyper-accountable-ledger-engine)

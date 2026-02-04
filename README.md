@@ -2,6 +2,7 @@
 
 ## 🏆 Hackathon Submission
 [![Hale Presentation](assets/presentation_thumbnail.png)](https://docs.google.com/videos/d/13sBWXuuN0jveXy57nKFmNNAl4oi0zJ0a2Vrs_f9xHEY/view)
+<p align="center"><i>▶️ Click the image above to watch the HALE Presentation Video</i></p>
 
 - **Live Demo**: [https://hale-oracle.vercel.app](https://hale-oracle.vercel.app)
 - **Colosseum Project**: [View Submission](https://colosseum.com/agent-hackathon/projects/hale-hyper-accountable-ledger-engine)
