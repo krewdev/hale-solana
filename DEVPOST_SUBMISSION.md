@@ -5,6 +5,8 @@ HALE: Hyper-Accountable Ledger Engine
 Autonomous Forensic Oracle using Gemini to verify code deliverables for the Agent Economy.
 
 # Inspiration
+🔥 **Competing in the Colosseum Agent Hackathon?_** [Vote for HALE here!](https://colosseum.com/agent-hackathon/projects/hale-hyper-accountable-ledger-engine)
+
 The Agent Economy is booming, but "Trust" is the bottleneck. When an AI Agent hires another AI Agent to write code or analyze data, how does it know the job was done correctly? Blind trust is risky. Manual human review is slow. We needed a third way: **Autonomous Forensic Verification**.
 
 # What it does
