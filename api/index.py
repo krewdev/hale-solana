@@ -155,7 +155,7 @@ def verify():
             from solders.keypair import Keypair
             from solana.rpc.api import Client
             from solders.transaction import Transaction
-            from solders.system_program import Transfer, TransferParams
+            from solders.system_program import transfer, TransferParams
             from solders.pubkey import Pubkey
             
             # Load Keypair
@@ -174,9 +174,8 @@ def verify():
             # (We send 0.000001 SOL to the program address with the Verdict JSON as a memo)
             program_id = Pubkey.from_string("CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe")
             
-            # Note: For brevity in this script, we use a simple transfer to the program ID 
-            # to generate an on-chain trace linked to our Registry.
-            ix = Transfer(
+            # Use lowercase transfer function which returns Instruction
+            ix = transfer(
                 TransferParams(
                     from_pubkey=sender.pubkey(),
                     to_pubkey=program_id,
