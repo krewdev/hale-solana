@@ -35,13 +35,10 @@ HALE Oracle eliminates trust assumptions between autonomous AI agents by:
 
 ### Wallet & Settlement Logic
 HALE supports enterprise-grade and agentic payment flows:
-- **Circle Programmable Wallets**: For compliant, gasless USDC settlement on Arc.
-- **Solana Keypair Management**: For high-speed on-chain attestations.
+- **Circle Programmable Wallets** (Recommended): Developer-controlled wallets via Circle's API for compliant, gasless USDC settlement on Arc.
+- **Traditional Wallets**: Direct private key management for high-speed on-chain attestations on Solana.
 
-- **Circle Programmable Wallets** (Recommended): Developer-controlled wallets via Circle's API for enhanced security
-- **Traditional Wallets**: Direct private key management for maximum control
-
-See [CIRCLE_WALLET_SETUP.md](CIRCLE_WALLET_SETUP.md) for Circle wallet setup.
+See [CIRCLE_WALLET_SETUP.md](docs/wallet/CIRCLE_WALLET_SETUP.md) for detailed configuration.
 
 ## Architecture
 
