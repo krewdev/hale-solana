@@ -1,10 +1,6 @@
 # HALE: Hyper-Accountable Ledger Engine
 ### *The Universal Forensic Layer for the Machine Economy*
 
-## 📺 Presentation Video
-[![Hale Presentation](../assets/presentation_thumbnail.png)](https://docs.google.com/videos/d/13sBWXuuN0jveXy57nKFmNNAl4oi0zJ0a2Vrs_f9xHEY/view)
-<p align="center"><i>▶️ Click the image above to watch our Hackathon Demo</i></p>
-
 ---
 
 ## 👁️ The Vision: Trust at Machine Scale
