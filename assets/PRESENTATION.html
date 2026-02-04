@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALE Oracle | Pitch Presentation</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Space+Grotesk:wght@300;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --accent: #00ff88;
+            --background: #050505;
+            --text: #ffffff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            overflow: hidden;
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8));
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            width: 100%;
+            transform: translateY(30px);
+            transition: var(--transition);
+            opacity: 0;
+        }
+
+        .slide.active .content {
+            transform: translateY(0);
+            opacity: 1;
+            transition-delay: 0.4s;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 6rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .description {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            line-height: 1.6;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        button {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            z-index: 1000;
+            transition: width 0.3s;
+        }
+
+        .stat-value {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Slide specific styles */
+        .slide-1 h1 {
+            font-size: 8rem;
+        }
+
+        .slide-12 {
+            text-align: center;
+        }
+
+        .slide-12 h1 {
+            font-size: 7rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress-bar" id="progress"></div>
+
+    <div class="presentation" id="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide slide-1 active" style="background-image: url('slide_1_title.png')">
+            <div class="content">
+                <h1>HALE ORACLE</h1>
+                <p class="subtitle">The Universal Agentic Ledger</p>
+                <p class="description">Autonomous Forensic Auditing for the Machine Economy</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Vision -->
+        <div class="slide" style="background-image: url('slide_2_vision.png')">
+            <div class="content">
+                <h1>Scaling the Future</h1>
+                <p class="subtitle">A World Without Human Friction</p>
+                <div class="grid">
+                    <div class="card">
+                        <div class="stat-value">10B+</div>
+                        <h3>Micro-transactions</h3>
+                        <p>Projected annual agentic volume by 2030.</p>
+                    </div>
+                    <div class="card">
+                        <div class="stat-value">Zero</div>
+                        <h3>Human Friction</h3>
+                        <p>Total independence from manual reviews.</p>
+                    </div>
+                    <div class="card">
+                        <div class="stat-value">Instant</div>
+                        <h3>Finality</h3>
+                        <p>Funds released the millisecond work is verified.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Problem -->
+        <div class="slide" style="background-image: url('slide_3_problem.png')">
+            <div class="content">
+                <h1 style="background: linear-gradient(45deg, #ff4d4d, #f9cb28); -webkit-background-clip: text;">The
+                    Trust Gap</h1>
+                <p class="subtitle">The Billion Dollar Hurdle</p>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Anonymous Risks</h3>
+                        <p>No reputation, no identity, no legal recourse for AI-to-AI trade.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Delivery Uncertainty</h3>
+                        <p>No efficient way to verify 'Proof of Work' at machine speed.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Escrow Friction</h3>
+                        <p>Current systems require human judges or slow voting models.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Solution -->
+        <div class="slide" style="background-image: url('slide_4_solution.png')">
+            <div class="content">
+                <h1>Meet HALE</h1>
+                <p class="subtitle">Your Autonomous Auditor</p>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Forensic Analysis</h3>
+                        <p>Powered by Google Gemini for deep code & data verification.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Solana Intent Ledger</h3>
+                        <p>Immutable Proofs of Intent (Anchor PDAs) on Solana Devnet.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Cross-Chain Bridge</h3>
+                        <p>Seamlessly syncing Solana attestations to Circle Arc escrows.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Solana Core -->
+        <div class="slide" style="background-image: url('slide_2_vision.png')">
+            <div class="content">
+                <h1>Solana Proofs of Intent</h1>
+                <p class="subtitle">The Forensic Standard (Anchor Program)</p>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Immutable PDAs</h3>
+                        <p>Every agentic intent is recorded in a Solana Program Derived Address before execution.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Sealing & Auditing</h3>
+                        <p>Attestations are sealed with outcome hashes and metadata URIs on-chain.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Live forensic Dashboard</h3>
+                        <p>A native Solana explorer for auditing agent trails in real-time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Mechanism -->
+        <div class="slide" style="background-image: url('slide_5_how_it_works.png')">
+            <div class="content">
+                <h1>The Three Steps</h1>
+                <p class="subtitle">How Trust is Automated</p>
+                <div class="grid">
+                    <div class="card">
+                        <h3>1. LOCK</h3>
+                        <p>Buyers deposit USDC into the ArcFuseEscrow contract.</p>
+                    </div>
+                    <div class="card">
+                        <h3>2. AUDIT</h3>
+                        <p>HALE AI scans the delivery for security, quality, and terms.</p>
+                    </div>
+                    <div class="card">
+                        <h3>3. SETTLE</h3>
+                        <p>Funds are instantly released or proportionally refunded.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Deep Dive (Code) -->
+        <div class="slide" style="background-image: url('use_case_code_verify.png')">
+            <div class="content">
+                <h1>Trust the Code</h1>
+                <p class="subtitle">Forensic Software Auditing</p>
+                <p class="description">HALE micro-scans every line for syntax, logic, and malicious patterns. Releasing
+                    funds the millisecond it passes—at the speed of code execution.</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Deep Dive (Bounties) -->
+        <div class="slide" style="background-image: url('use_case_bounty_delivery.png')">
+            <div class="content">
+                <h1>Freelance 2.0</h1>
+                <p class="subtitle">The Bounty Era</p>
+                <p class="description">Ensuring bounties are only paid when assets forensicly match the request. No
+                    ghosting. No non-payment. Just perfect, borderless agentic labor markets.</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Deep Dive (Security) -->
+        <div class="slide" style="background-image: url('use_case_security_audit.png')">
+            <div class="content">
+                <h1>Security First</h1>
+                <p class="subtitle">Payments Triggered by Protection</p>
+                <p class="description">Catching backdoors, injection attacks, and resource exhaustion before they
+                    compromise the buyer. HALE is a security protocol that makes commerce safe.</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Collaboration -->
+        <div class="slide" style="background-image: url('use_case_collaboration.png')">
+            <div class="content">
+                <h1>Multi-Buyer Escrow</h1>
+                <p class="subtitle">Collective Resource Scaling</p>
+                <p class="description">Supporting up to 3 buyers per seller. HALE manages the split and proportional
+                    refund logic automatically. The engine for the first collective AI corporations.</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Market -->
+        <div class="slide" style="background-image: url('slide_9_market.png')">
+            <div class="content">
+                <h1>The Machine Economy</h1>
+                <p class="subtitle">A Massive Scale Opportunity</p>
+                <div class="grid">
+                    <div class="card">
+                        <div class="stat-value">45%</div>
+                        <h3>CAGR</h3>
+                        <p>Year-over-year growth in autonomous transactions.</p>
+                    </div>
+                    <div class="card">
+                        <div class="stat-value">$10T</div>
+                        <h3>TAM</h3>
+                        <p>Total addressable market for agentic commerce services.</p>
+                    </div>
+                    <div class="card">
+                        <div class="stat-value">$1B</div>
+                        <h3>Our Goal</h3>
+                        <p>Transaction volume secured by HALE by 2026.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Roadmap -->
+        <div class="slide" style="background-image: url('slide_10_roadmap.png')">
+            <div class="content">
+                <h1>The Path Ahead</h1>
+                <p class="subtitle">From Testnet to Empire</p>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Q1 2026</h3>
+                        <p>Solana Mainnet Launch & Public Anchor Program Verification.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Q2 2026</h3>
+                        <p>Expansion to Base, Ethereum, and Polygon for Global Settlement.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Q3 2026</h3>
+                        <p>Full SDK release for Autonomous DeFi Agent integration.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: CTA -->
+        <div class="slide slide-12" style="background-image: url('slide_12_cta.png')">
+            <div class="content">
+                <h1>Scale Trust.</h1>
+                <p class="subtitle" style="font-size: 3rem;">Join the HALE Ecosystem today.</p>
+                <div style="margin-top: 4rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                    <div class="card">
+                        <h3>GitHub</h3>
+                        <p>github.com/krewdev/hale-solana</p>
+                    </div>
+                    <div class="card">
+                        <h3>Live Demo</h3>
+                        <p>hale-oracle.vercel.app</p>
+                    </div>
+                    <div class="card">
+                        <h3>Explorer</h3>
+                        <p>HaleScan (Coming Soon)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="prevSlide()">Prev</button>
+        <button onclick="nextSlide()">Next</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progress = document.getElementById('progress');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+            progress.style.width = ((currentSlide + 1) / slides.length) * 100 + '%';
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlide();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateSlide();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initial progress
+        progress.style.width = (1 / slides.length) * 100 + '%';
+    </script>
+</body>
+
+</html>
