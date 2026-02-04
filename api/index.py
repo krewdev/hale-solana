@@ -144,6 +144,97 @@ def verify():
             'risk_flags': risk_flags
         }
 
+    # 3. Blockchain Settlement (Real Transactions)
+    blocking_tx_hash = None
+    solana_tx_signature = None
+    
+    if verdict_json.get('release_funds'):
+        # --- A. Solana Settlement (Proof of Outcome) ---
+        try:
+            print("[Solana] Submitting Attestation...")
+            from solders.keypair import Keypair
+            from solana.rpc.api import Client
+            from solders.transaction import Transaction
+            from solders.system_program import Transfer, TransferParams
+            from solders.pubkey import Pubkey
+            
+            # Load Keypair
+            secret_json = os.getenv("SOLANA_SECRET_JSON")
+            if secret_json:
+                 secret = json.loads(secret_json)
+            else:
+                 with open('solana-keypair.json', 'r') as f:
+                     secret = json.load(f)
+            sender = Keypair.from_bytes(secret)
+            
+            # Connect to Devnet
+            solana_client = Client("https://api.devnet.solana.com")
+            
+            # Create a "Proof of Outcome" Memo Transaction
+            # (We send 0.000001 SOL to the program address with the Verdict JSON as a memo)
+            program_id = Pubkey.from_string("CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe")
+            
+            # Note: For brevity in this script, we use a simple transfer to the program ID 
+            # to generate an on-chain trace linked to our Registry.
+            ix = Transfer(
+                TransferParams(
+                    from_pubkey=sender.pubkey(),
+                    to_pubkey=program_id,
+                    lamports=1000 # Micro-payment to log interaction
+                )
+            )
+            
+            recent_blockhash = solana_client.get_latest_blockhash().value.blockhash
+            txn = Transaction([ix], recent_blockhash, [sender])
+            resp = solana_client.send_transaction(txn)
+            solana_tx_signature = str(resp.value)
+            print(f"[Solana] Success! Sig: {solana_tx_signature}")
+            
+        except Exception as e:
+            print(f"[Solana] Error: {e}")
+            solana_tx_signature = "failed_but_attempted"
+
+        # --- B. Arc / EVM Settlement (Payment Release) ---
+        try:
+            print("[Arc] Releasing Funds on EVM...")
+            from web3 import Web3
+            from eth_account import Account
+            
+            # Config
+            rpc_url = os.getenv("SEPOLIA_RPC_URL", "https://rpc.sepolia.org")
+            private_key = os.getenv("PRIVATE_KEY")
+            contract_addr = os.getenv("ESCROW_CONTRACT_ADDRESS")
+            
+            if rpc_url and private_key and contract_addr:
+                w3 = Web3(Web3.HTTPProvider(rpc_url))
+                account = Account.from_key(private_key)
+                
+                # Simple ABI for release function
+                abi = [{"inputs": [{"internalType": "address", "name": "seller", "type": "address"}], "name": "release", "outputs": [], "stateMutability": "nonpayable", "type": "function"}]
+                contract = w3.eth.contract(address=contract_addr, abi=abi)
+                
+                # Build Tx
+                seller_eth_addr = "0x" + transaction_id[-40:] if len(transaction_id) > 40 else account.address # Fallback to self for demo safety
+                
+                # Check gas price
+                gas_price = w3.eth.gas_price
+                nonce = w3.eth.get_transaction_count(account.address)
+                
+                tx = contract.functions.release(seller_eth_addr).build_transaction({
+                    'chainId': w3.eth.chain_id,
+                    'gas': 200000,
+                    'gasPrice': gas_price,
+                    'nonce': nonce,
+                })
+                
+                signed_tx = w3.eth.account.sign_transaction(tx, private_key)
+                tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+                blocking_tx_hash = w3.to_hex(tx_hash)
+                print(f"[Arc] Success! Hash: {blocking_tx_hash}")
+                
+        except Exception as e:
+            print(f"[Arc] Error: {e}")
+
     # Log transaction
     monitor_store['total_transactions'] += 1
     monitor_store['recent_transactions'].insert(0, {
@@ -151,9 +242,15 @@ def verify():
         'seller': '0x' + transaction_id[-4:],
         'amount': '0.0',
         'status': verdict_json.get('verdict', 'UNKNOWN'),
-        'timestamp': int(time.time())
+        'timestamp': int(time.time()),
+        'solana_sig': solana_tx_signature,
+        'arc_tx': blocking_tx_hash
     })
     monitor_store['recent_transactions'] = monitor_store['recent_transactions'][:10]
+    
+    # Inject real TX data into response
+    verdict_json['tx_hash_solana'] = solana_tx_signature
+    verdict_json['tx_hash_arc'] = blocking_tx_hash
     
     return jsonify(verdict_json)
 @app.route('/api/bridge/status', methods=['GET'])
