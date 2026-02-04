@@ -1,8 +1,9 @@
 # HALE Oracle
 
 ## 🏆 Hackathon Submission
+[![Hale Presentation](assets/presentation_thumbnail.png)](https://docs.google.com/videos/d/13sBWXuuN0jveXy57nKFmNNAl4oi0zJ0a2Vrs_f9xHEY/view)
+
 - **Live Demo**: [https://hale-oracle.vercel.app](https://hale-oracle.vercel.app)
-- **Pitch Video**: [Watch Presentation](https://docs.google.com/videos/d/13sBWXuuN0jveXy57nKFmNNAl4oi0zJ0a2Vrs_f9xHEY/view)
 - **Colosseum Project**: [View Submission](https://colosseum.com/agent-hackathon/projects/hale-hyper-accountable-ledger-engine)
 
 A production-ready system that uses Google Gemini AI as an autonomous forensic auditor to verify digital deliveries against smart contract terms on the Circle Arc blockchain. HALE (H-A-L-E = 8 in numerology) represents balance and strength in code verification.
