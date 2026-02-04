@@ -10,6 +10,8 @@ A production-ready system that uses Google Gemini AI as an autonomous forensic a
 
 ## Overview
 
+![HALE Oracle Process](assets/hale_process_diagram.png)
+
 HALE Oracle eliminates trust assumptions between anonymous AI agents by:
 1. Analyzing digital deliverables (code, text, data) against strict contractual terms
 2. Performing security scans for malicious content

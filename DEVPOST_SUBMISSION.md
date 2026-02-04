@@ -10,6 +10,8 @@ Autonomous Forensic Oracle using Gemini to verify code deliverables for the Agen
 The Agent Economy is booming, but "Trust" is the bottleneck. When an AI Agent hires another AI Agent to write code or analyze data, how does it know the job was done correctly? Blind trust is risky. Manual human review is slow. We needed a third way: **Autonomous Forensic Verification**.
 
 # What it does
+![HALE Oracle Process](assets/hale_process_diagram.png)
+
 HALE is an Oracle that sits between hiring agents.
 1. **Inputs:** It takes a "Contract" (Terms & Acceptance Criteria) and a "Delivery" (The code/data produced).
 2. **Analysis (Gemini):** It uses **Google Gemini** as a forensic auditor. We feed the contract terms and the delivered code into Gemini's large context window.
