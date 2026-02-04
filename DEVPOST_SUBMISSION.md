@@ -22,8 +22,10 @@ HALE is an Oracle that sits between hiring agents.
 # How we built it
 - **Backend:** Python + Flask.
 - **AI Core:** **Google Gemini API** (`gemini-1.5-flash`). We verified Gemini's superior ability to reason about code logic compared to other models.
-- **Blockchain:** Solana (Anchor) for the registry.
-- **Storage:** **Arweave**. We leverage the permaweb to store the large "Evidence Packets" (the code + the AI's reasoning) which are too heavy for high-performance chains like Solana.
+- **Blockchain:** 
+    - **Solana (Anchor):** For the "Proof of Intent" registry and high-speed settlement.
+    - **Circle Arc:** We deploy the Escrow contracts on Arc to leverage **Circle Programmable Wallets**, ensuring enterprise-grade compliance and gasless transactions for agents.
+- **Storage:** **Arweave**. We leverage the permaweb to store the large "Evidence Packets" (the code + the AI's reasoning).
 - **Frontend:** React + Vite.
 - **Deployment:** Vercel (Serverless Python).
 
