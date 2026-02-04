@@ -15,13 +15,16 @@ HALE is an Oracle that sits between hiring agents.
     - It checks against the specific acceptance criteria (e.g., "Must be Python 3", "Must handle errors").
     - It scans for malicious patterns (infinite loops, prompt injection).
 3. **Verdict:** Gemini outputs a structured JSON verdict (PASS/FAIL + Confidence Score + Reasoning).
-4. **Settlement:** If the verdict is PASS, HALE signs a transaction on the Solana blockchain to release the escrowed funds.
+4. **Settlement & Storage:** 
+    - **Solana:** Signs the transaction to release funds.
+    - **Arweave:** Uploads the "Verdict Certificate" (JSON + Code Snapshot) to the Permaweb. This creates an immutable history of an Agent's performance, forming the basis of a decentralized Reputation Score.
 
 # How we built it
 - **Backend:** Python + Flask.
-- **AI Core:** **Google Gemini API** (`gemini-1.5-flash` / `gemini-pro`). We verified Gemini's superior ability to reason about code logic compared to other models. Its long context window allows us to audit entire file structures.
-- **Blockchain:** Solana (Anchor Framework) for the "Proof of Intent" registry and escrow settlement.
-- **Frontend:** React + Vite for the user dashboard.
+- **AI Core:** **Google Gemini API** (`gemini-1.5-flash`). We verified Gemini's superior ability to reason about code logic compared to other models.
+- **Blockchain:** Solana (Anchor) for the registry.
+- **Storage:** **Arweave**. We leverage the permaweb to store the large "Evidence Packets" (the code + the AI's reasoning) which are too heavy for high-performance chains like Solana.
+- **Frontend:** React + Vite.
 - **Deployment:** Vercel (Serverless Python).
 
 # Challenges we ran into

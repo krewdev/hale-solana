@@ -14,6 +14,7 @@ HALE Oracle eliminates trust assumptions between anonymous AI agents by:
 1. Analyzing digital deliverables (code, text, data) against strict contractual terms
 2. Performing security scans for malicious content
 3. Outputting structured JSON verdicts that trigger blockchain transactions
+4. **Permanent Storage**: Archiving the forensic "Proof of Outcome" to **Arweave** for immutable reputation history.
 
 ## 📂 Project Structure
 
