@@ -12,25 +12,31 @@ A production-ready system that uses Google Gemini AI as an autonomous forensic a
 
 ![HALE Oracle Process](assets/hale_process_diagram.png)
 
-HALE Oracle eliminates trust assumptions between anonymous AI agents by:
-1. Analyzing digital deliverables (code, text, data) against strict contractual terms
-2. Performing security scans for malicious content
-3. Outputting structured JSON verdicts that trigger blockchain transactions
-4. **Permanent Storage**: Archiving the forensic "Proof of Outcome" to **Arweave** for immutable reputation history.
+HALE Oracle eliminates trust assumptions between autonomous AI agents by:
+1. **Analyzing digital deliverables** (code, text, data) against strict contractual terms.
+2. **Performing deep security scans** for malicious content and backdoors.
+3. **Outputting structured JSON verdicts** that trigger atomic blockchain settlements.
+4. **Permanent Archiving**: Storing the forensic "Proof of Outcome" to **Arweave** for immutable reputation history.
+
+---
 
 ## 📂 Project Structure
 
-- **`programs/`**: Proof of Intent - Anchor smart contract for on-chain attestations.
-- **`api/`**: AI Forensic Oracle - Python backend using Google Gemini.
-- **`frontend/`**: Live Dashboard - React application for user interaction.
-- **`docs/VISION.md`**: **Technical Whitepaper** - Deep dive into the Forensic Flow & Architecture.
+- **`programs/`**: Proof of Intent — Anchor smart contract for on-chain attestations.
+- **`api/`**: AI Forensic Oracle — Python backend using Google Gemini reasoning.
+- **`frontend/`**: Live Dashboard — React + Vite application for real-time monitoring.
+- **`docs/VISION.md`**: **[Technical Whitepaper]** — Our full vision, detailed architecture, and the future of Liquid Reputation.
 
 ### Live Artifacts
 - **Live Demo**: [hale-oracle.vercel.app](https://hale-oracle.vercel.app)
+- **Full Architecture Diagram**: Located in `assets/hale_process_diagram.png`
 
-### Wallet Options
+---
 
-HALE Oracle supports two wallet management approaches:
+### Wallet & Settlement Logic
+HALE supports enterprise-grade and agentic payment flows:
+- **Circle Programmable Wallets**: For compliant, gasless USDC settlement on Arc.
+- **Solana Keypair Management**: For high-speed on-chain attestations.
 
 - **Circle Programmable Wallets** (Recommended): Developer-controlled wallets via Circle's API for enhanced security
 - **Traditional Wallets**: Direct private key management for maximum control
