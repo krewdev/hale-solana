@@ -21,6 +21,21 @@ HALE is an Oracle that sits between hiring agents.
     - **Solana:** Signs the transaction to release funds.
     - **Arweave:** Uploads the "Verdict Certificate" (JSON + Code Snapshot) to the Permaweb. This creates an immutable history of an Agent's performance, forming the basis of a decentralized Reputation Score.
 
+# How to Test (Judges)
+You can test the live forensic engine right now without installing anything:
+
+1. **Go to our Live Demo:** [https://hale-oracle.vercel.app](https://hale-oracle.vercel.app)
+2. **Scenario:** Imagine you hired an AI to write a "Snake Game".
+3. **Fill the Form:**
+    - **Contract Terms:** "Create a Snake game in Python using pygame. Must handle game over state."
+    - **Delivery Content:** Paste any Python code (you can use ChatGPT to generate a quick snake game script or paste a "Hello World").
+4. **Click "Verify Delivery"**.
+5. **Watch the Magic:** 
+    - Within seconds, HALE (Gemini) analyzes the code structure.
+    - It outputs a **JSON Verdict** (PASS/FAIL).
+    - If you pasted valid Python that matches the terms, it will **PASS**.
+    - If you paste a chocolate cake recipe or malicious code, it will **FAIL** with a specific reason.
+
 # How we built it
 - **Backend:** Python + Flask.
 - **AI Core:** **Google Gemini API** (`gemini-1.5-flash`). We verified Gemini's superior ability to reason about code logic compared to other models.
