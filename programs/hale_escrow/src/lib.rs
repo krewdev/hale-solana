@@ -14,9 +14,12 @@ pub mod hale_escrow {
         amount: u64,
         is_spl: bool,
     ) -> Result<()> {
+        require!(amount > 0, HaleError::ZeroAmount);
+
         let escrow = &mut ctx.accounts.escrow;
         escrow.buyer = ctx.accounts.buyer.key();
         escrow.seller = ctx.accounts.seller.key();
+        escrow.oracle = ctx.accounts.oracle.key();
         escrow.intent_hash = intent_hash;
         escrow.amount = amount;
         escrow.status = EscrowStatus::Draft;
@@ -28,9 +31,12 @@ pub mod hale_escrow {
     }
 
     pub fn deposit_sol(ctx: Context<DepositSol>) -> Result<()> {
-        let amount = ctx.accounts.escrow.amount;
-        require!(!ctx.accounts.escrow.is_spl, HaleError::AssetMismatch);
+        let escrow = &ctx.accounts.escrow;
+        require!(!escrow.is_spl, HaleError::AssetMismatch);
+        // FIX: Only allow deposit when escrow is in Draft status
+        require!(escrow.status == EscrowStatus::Draft, HaleError::InvalidStatus);
 
+        let amount = escrow.amount;
         let ix = system_instruction::transfer(
             &ctx.accounts.buyer.key(),
             &ctx.accounts.escrow.key(),
@@ -53,6 +59,8 @@ pub mod hale_escrow {
     pub fn deposit_token(ctx: Context<DepositToken>) -> Result<()> {
         let escrow = &mut ctx.accounts.escrow;
         require!(escrow.is_spl, HaleError::AssetMismatch);
+        // FIX: Only allow deposit when escrow is in Draft status
+        require!(escrow.status == EscrowStatus::Draft, HaleError::InvalidStatus);
 
         let cpi_accounts = Transfer {
             from: ctx.accounts.buyer_token_account.to_account_info(),
@@ -154,6 +162,8 @@ pub mod hale_escrow {
 
     // Paymaster feature: Oracle can be compensated in USDC for gas/service
     pub fn pay_with_usdc(ctx: Context<PayWithUsdc>, fee_amount: u64) -> Result<()> {
+        require!(fee_amount > 0, HaleError::ZeroAmount);
+
         let cpi_accounts = Transfer {
             from: ctx.accounts.user_token_account.to_account_info(),
             to: ctx.accounts.paymaster_token_account.to_account_info(),
@@ -168,13 +178,15 @@ pub mod hale_escrow {
     }
 }
 
+// NOTE: Account space increased by 32 bytes to store oracle pubkey.
+// New space = 8 + 32 + 32 + 32 + 32 + 8 + 1 + 1 + 1 = 147
 #[derive(Accounts)]
 #[instruction(intent_hash: [u8; 32], amount: u64)]
 pub struct CreateEscrow<'info> {
     #[account(
         init,
         payer = buyer,
-        space = 8 + 32 + 32 + 32 + 8 + 1 + 1 + 1,
+        space = 8 + 32 + 32 + 32 + 32 + 8 + 1 + 1 + 1,
         seeds = [b"escrow", buyer.key().as_ref(), intent_hash.as_ref()],
         bump
     )]
@@ -183,6 +195,8 @@ pub struct CreateEscrow<'info> {
     pub buyer: Signer<'info>,
     /// CHECK: Target seller
     pub seller: UncheckedAccount<'info>,
+    /// CHECK: Designated oracle/arbiter for this escrow
+    pub oracle: UncheckedAccount<'info>,
     pub system_program: Program<'info, System>,
 }
 
@@ -220,11 +234,14 @@ pub struct DepositToken<'info> {
     pub token_program: Program<'info, Token>,
 }
 
+// FIX: Oracle must match the oracle stored in the escrow account.
+// Previously, any signer could release funds — critical authorization bypass.
 #[derive(Accounts)]
 pub struct Release<'info> {
     #[account(
         mut,
         has_one = seller,
+        has_one = oracle,
         seeds = [b"escrow", escrow.buyer.as_ref(), escrow.intent_hash.as_ref()],
         bump = escrow.bump,
     )]
@@ -254,11 +271,14 @@ pub struct PayWithUsdc<'info> {
     pub token_program: Program<'info, Token>,
 }
 
+// FIX: Oracle must match the oracle stored in the escrow account.
+// Previously, any signer could trigger a refund — critical authorization bypass.
 #[derive(Accounts)]
 pub struct Refund<'info> {
     #[account(
         mut,
         has_one = buyer,
+        has_one = oracle,
         seeds = [b"escrow", escrow.buyer.as_ref(), escrow.intent_hash.as_ref()],
         bump = escrow.bump,
     )]
@@ -281,6 +301,7 @@ pub struct Refund<'info> {
 pub struct EscrowAccount {
     pub buyer: Pubkey,
     pub seller: Pubkey,
+    pub oracle: Pubkey,          // FIX: Added — designated arbiter for release/refund
     pub intent_hash: [u8; 32],
     pub amount: u64,
     pub is_spl: bool,
@@ -304,4 +325,6 @@ pub enum HaleError {
     InvalidStatus,
     #[msg("Unauthorized access")]
     Unauthorized,
+    #[msg("Amount must be greater than zero")]
+    ZeroAmount,
 }
