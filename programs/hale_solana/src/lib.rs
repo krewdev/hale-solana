@@ -16,6 +16,11 @@ pub mod hale_solana {
         attestation.intent_hash = intent_hash;
         attestation.metadata_uri = metadata_uri;
         attestation.status = AttestationStatus::Draft;
+        // Make defaults explicit so account decoding is stable even if account bytes
+        // aren't fully zeroed (e.g. after future reallocs).
+        attestation.outcome_hash = None;
+        attestation.report_hash = None;
+        attestation.evidence_uri = None;
         attestation.bump = ctx.bumps.attestation;
         
         msg!("Attestation initialized for intent: {:?}", intent_hash);
@@ -98,7 +103,7 @@ pub struct InitializeAttestation<'info> {
     #[account(
         init,
         payer = authority,
-        space = 600, // Fixed size allocation to avoid calculation issues
+        space = 8 + Attestation::INIT_SPACE,
         seeds = [b"attestation", authority.key().as_ref(), intent_hash.as_ref()],
         bump
     )]
@@ -144,14 +149,22 @@ pub struct ChallengeAttestation<'info> {
 }
 
 #[account]
+#[derive(InitSpace)]
 pub struct Attestation {
     pub authority: Pubkey,
     pub intent_hash: [u8; 32],
+
+    // URLs can be long; still cap them so account sizing is deterministic.
+    #[max_len(256)]
     pub metadata_uri: String,
+
     pub status: AttestationStatus,
     pub outcome_hash: Option<[u8; 32]>,
     pub report_hash: Option<[u8; 32]>,
+
+    #[max_len(256)]
     pub evidence_uri: Option<String>,
+
     pub bump: u8,
 }
 
