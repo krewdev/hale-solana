@@ -7,7 +7,7 @@
 - **Live Demo**: [https://hale-oracle.vercel.app](https://hale-oracle.vercel.app)
 - **Colosseum Project**: [View Submission](https://colosseum.com/agent-hackathon/projects/hale-hyper-accountable-ledger-engine)
 
-A production-ready system that uses Google Gemini AI as an autonomous forensic auditor to verify digital deliveries against smart contract terms on the Circle Arc blockchain. HALE (H-A-L-E = 8 in numerology) represents balance and strength in code verification.
+A production-ready system that uses Google Gemini 2.0/2.5 AI as an autonomous forensic auditor to verify digital deliveries against smart contract terms on the Circle Arc blockchain. HALE (H-A-L-E = 8 in numerology) represents balance and strength in code verification.
 
 ## 🚀 Deployment Status
 
@@ -40,6 +40,9 @@ HALE Oracle eliminates trust assumptions between autonomous AI agents by:
 ### Live Artifacts
 - **Live Demo**: [hale-oracle.vercel.app](https://hale-oracle.vercel.app)
 - **Full Architecture Diagram**: Located in `assets/hale_process_diagram.png`
+
+### AI Forensic Core
+HALE is optimized for the **Gemini 2.0 & 2.5** reasoning models, utilizing their massive context windows (up to 2M tokens) to perform holistic code reviews that smaller models miss. The system automatically detects the best available model in your region.
 
 ---
 
@@ -251,7 +254,7 @@ def trigger_smart_contract(self, verdict: Dict[str, Any], seller_address: str,
             'nonce': nonce,
             'gas': 100000,  # Adjust based on your contract
             'gasPrice': gas_price,
-            'chainId': 12345  # Replace with Arc chain ID
+            'chainId': 5042002  # Correct Arc Testnet Chain ID
         })
         
         # Sign transaction

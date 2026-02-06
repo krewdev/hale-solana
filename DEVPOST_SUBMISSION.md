@@ -41,7 +41,7 @@ You can test the live forensic engine right now without installing anything:
 
 # How we built it
 - **Backend:** Python + Flask.
-- **AI Core:** **Google Gemini API** (`gemini-1.5-flash`). We verified Gemini's superior ability to reason about code logic compared to other models.
+- **AI Core:** **Google Gemini API** (`gemini-2.0-flash` & `gemini-2.5-flash`). We verified Gemini's superior ability to reason about code logic compared to other models.
 - **Blockchain:** 
     - **Solana (Anchor):** For the "Proof of Intent" registry and high-speed settlement.
     - **Circle Arc:** We deploy the Escrow contracts on Arc to leverage **Circle Programmable Wallets**, ensuring enterprise-grade compliance and gasless transactions for agents.
