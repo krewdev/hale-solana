@@ -273,15 +273,20 @@ function Deployment() {
               <h2 className="text-xl font-black text-white uppercase italic text-blue-400">02. Stipulate Requirements</h2>
               <p className="text-gray-500 text-xs mt-1">Define the forensic parameters for the AI auditor.</p>
             </div>
-            <a
-              href={`${NETWORKS.ARC_TESTNET.explorer}/address/${deployedAddress}`}
-              target="_blank"
-              rel="noreferrer"
-              className="px-3 py-1 bg-emerald-900/30 border border-emerald-500/30 rounded-lg text-xs font-mono text-emerald-400 flex items-center gap-2 hover:bg-emerald-900/50 transition-all"
-            >
-              <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-              VAULT: {deployedAddress}
-            </a>
+            <div className="flex flex-col items-end gap-2">
+              <a
+                href={`${NETWORKS.ARC_TESTNET.explorer}/address/${deployedAddress}`}
+                target="_blank"
+                rel="noreferrer"
+                className="px-3 py-1 bg-emerald-900/30 border border-emerald-500/30 rounded-lg text-xs font-mono text-emerald-400 flex items-center gap-2 hover:bg-emerald-900/50 transition-all"
+              >
+                <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                VAULT: {deployedAddress}
+              </a>
+              <div className="px-3 py-1 bg-cyan-900/30 border border-cyan-500/30 rounded-lg text-[10px] font-black text-cyan-400 flex items-center gap-1 uppercase tracking-tighter">
+                <Shield size={10} /> Forensic Protection by Solana
+              </div>
+            </div>
           </div>
 
           <div className="space-y-6">
