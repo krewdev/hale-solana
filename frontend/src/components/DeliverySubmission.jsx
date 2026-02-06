@@ -11,6 +11,7 @@ function DeliverySubmission() {
     const [status, setStatus] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [verdictData, setVerdictData] = useState(null);
 
     // Auto-fill from URL parameters (for shareable links)
     useEffect(() => {
@@ -77,12 +78,13 @@ function DeliverySubmission() {
                     setStatus('⏳ Oracle is verifying your code...');
                 } else if (data.status === 'complete') {
                     // Show verdict details
+                    setVerdictData(data);
                     if (data.verdict === 'PASS') {
-                        setStatus(`✅ PASSED! (${data.confidence}% confidence)\n\n${data.reasoning}`);
+                        setStatus(`✅ PASSED! (${data.confidence_score || data.confidence}% confidence)\n\n${data.reasoning}`);
                     } else if (data.verdict === 'FAIL') {
-                        setStatus(`❌ FAILED (${data.confidence}% confidence)\n\n${data.reasoning}${data.risk_flags?.length ? '\n\nRisks: ' + data.risk_flags.join(', ') : ''}`);
+                        setStatus(`❌ FAILED (${data.confidence_score || data.confidence}% confidence)\n\n${data.reasoning}${data.risk_flags?.length ? '\n\nRisks: ' + data.risk_flags.join(', ') : ''}`);
                     } else {
-                        setStatus(`📊 Verdict: ${data.verdict} (${data.confidence}%)\n\n${data.reasoning}`);
+                        setStatus(`📊 Verdict: ${data.verdict} (${data.confidence_score || data.confidence}%)\n\n${data.reasoning}`);
                     }
                     clearInterval(interval);
                 } else if (data.status === 'completed') {
@@ -99,7 +101,7 @@ function DeliverySubmission() {
             } catch (err) {
                 console.error('Status poll error:', err);
             }
-        }, 3000);  // Poll every 3 seconds instead of 5
+        }, 3000);
 
         // Stop polling after 5 minutes
         setTimeout(() => clearInterval(interval), 300000);
@@ -256,14 +258,77 @@ function DeliverySubmission() {
 
                         {status && (
                             <div style={{
-                                padding: '12px',
-                                borderRadius: '8px',
-                                background: 'rgba(0,255,0,0.1)',
-                                border: '1px solid rgba(0,255,0,0.3)',
-                                color: '#51cf66',
+                                padding: '16px',
+                                borderRadius: '12px',
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
                                 marginBottom: '20px'
                             }}>
-                                {status}
+                                <div style={{
+                                    color: status.includes('✅') ? '#51cf66' : status.includes('❌') ? '#ff6b6b' : '#667eea',
+                                    fontWeight: 'bold',
+                                    marginBottom: '10px',
+                                    whiteSpace: 'pre-wrap'
+                                }}>
+                                    {status}
+                                </div>
+
+                                {verdictData && (verdictData.solana_init_tx || verdictData.solana_seal_tx) && (
+                                    <div style={{
+                                        marginTop: '15px',
+                                        paddingTop: '15px',
+                                        borderTop: '1px solid rgba(255,255,255,0.1)',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: '10px'
+                                    }}>
+                                        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', fontWeight: 'bold', textTransform: 'uppercase' }}>Forensic Proofs (Solana)</div>
+                                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                                            {verdictData.solana_init_tx && (
+                                                <a
+                                                    href={`https://explorer.solana.com/tx/${verdictData.solana_init_tx}?cluster=devnet`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    style={{
+                                                        fontSize: '11px',
+                                                        padding: '6px 12px',
+                                                        background: 'rgba(34, 211, 238, 0.1)',
+                                                        border: '1px solid rgba(34, 211, 238, 0.3)',
+                                                        borderRadius: '8px',
+                                                        color: '#22d3ee',
+                                                        textDecoration: 'none',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '6px'
+                                                    }}
+                                                >
+                                                    SOL_INIT <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M7 17L17 7M17 7H7M17 7V17" /></svg>
+                                                </a>
+                                            )}
+                                            {verdictData.solana_seal_tx && (
+                                                <a
+                                                    href={`https://explorer.solana.com/tx/${verdictData.solana_seal_tx}?cluster=devnet`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    style={{
+                                                        fontSize: '11px',
+                                                        padding: '6px 12px',
+                                                        background: 'rgba(16, 185, 129, 0.1)',
+                                                        border: '1px solid rgba(16, 185, 129, 0.3)',
+                                                        borderRadius: '8px',
+                                                        color: '#10b981',
+                                                        textDecoration: 'none',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '6px'
+                                                    }}
+                                                >
+                                                    SOL_FORENSIC_SEAL <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M7 17L17 7M17 7H7M17 7V17" /></svg>
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         )}
 
