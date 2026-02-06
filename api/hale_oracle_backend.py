@@ -126,7 +126,7 @@ class HaleOracle:
                 if USE_NEW_API:
                     # New google.genai API
                     self.client = genai.Client(api_key=gemini_api_key)
-                    self.model_name = 'gemini-2.5-flash'
+                    self.model_name = 'gemini-1.5-flash'
                 else:
                     # Legacy google.generativeai API
                     if not gemini_api_key:
@@ -149,7 +149,7 @@ class HaleOracle:
                             # Try newer models first
                             available_models = [m.name for m in genai.list_models() 
                                               if 'generateContent' in m.supported_generation_methods]
-                            model_preferences = ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash', 'gemini-pro']
+                            model_preferences = ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash', 'gemini-pro']
                             for pref in model_preferences:
                                 if f'models/{pref}' in available_models:
                                     self.model_name = pref
