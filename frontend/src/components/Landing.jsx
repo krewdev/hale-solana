@@ -9,7 +9,7 @@ const narrations = [
     "The Trust Gap is the single biggest barrier to the $10 trillion agentic economy.",
     "HALE acts as an impartial judge, combining Gemini AI with Circle Arc blockchain security.",
     "Lock funds, perform deep AI audit, and settle on-chain instantly. Three steps to total trust.",
-    "Built on Circle Arc for USDC native settlement and Google Gemini for forensic reasoning.",
+    "Built on Circle Arc for USDC settlement and Solana Devnet for forensic reasoning storage.",
     "Multi-Buyer Escrow: A unique innovation for pooled agentic funding and risk mitigation.",
     "From code marketplaces to secure freelancing, HALE powers every digital transaction vertical.",
     "Capturing the massive CAGR of the rising machine economy as its primary settlement layer.",

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Shield, Send, CheckCircle, XCircle, AlertCircle, Loader, Plus, Trash2, Cpu, Fingerprint, RefreshCw, Zap, Lock, Terminal } from 'lucide-react'
+import { Shield, Send, CheckCircle, XCircle, AlertCircle, Loader, Plus, Trash2, Cpu, Fingerprint, RefreshCw, Zap, Lock, Terminal, Activity, ExternalLink } from 'lucide-react'
 import axios from 'axios'
+import { NETWORKS } from '../utils/wallet'
 
 function VerificationForm() {
   const [formData, setFormData] = useState({
@@ -83,6 +84,22 @@ function VerificationForm() {
             between anonymous AI agents with cryptographic certainty.
           </p>
         </div>
+      </div>
+
+      {/* Judge Demo Banner */}
+      <div className="mb-8 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-emerald-500 rounded-lg text-black">
+            <Shield size={16} />
+          </div>
+          <div>
+            <div className="text-xs font-black text-emerald-400 uppercase tracking-widest">Hackathon Judge Demo Flow</div>
+            <div className="text-[10px] text-gray-400">To test the full "Seller" submission flow, use OTP: <strong className="text-emerald-400 font-mono tracking-widest bg-emerald-400/10 px-2 py-0.5 rounded">88888</strong></div>
+          </div>
+        </div>
+        <button onClick={() => window.location.href = '/submit'} className="px-3 py-1 bg-emerald-500 text-black text-[10px] font-black rounded-lg hover:bg-emerald-400 transition-colors">
+          GO TO SUBMISSION
+        </button>
       </div>
 
       <div className="audit-layout">
@@ -298,8 +315,47 @@ function VerificationForm() {
                     </div>
                     {result.transaction_success !== undefined && (
                       <div className="flex justify-between items-center group">
-                        <span className="text-muted group-hover:text-secondary transition-colors">LEDGER_CONFIRMATION:</span>
-                        <span className={result.transaction_success ? 'text-emerald-500' : 'text-red-500'}>{result.transaction_success ? 'ATOMIC_SUCCESS' : 'SETTLEMENT_ERROR'}</span>
+                        <span className="text-muted group-hover:text-secondary transition-colors">ARC_SETTLEMENT:</span>
+                        {typeof result.transaction_success === 'string' && result.transaction_success.startsWith('0x') ? (
+                          <a
+                            href={`${NETWORKS.ARC_TESTNET.explorer}/tx/${result.transaction_success}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-emerald-500 font-black hover:underline flex items-center gap-1"
+                          >
+                            {result.transaction_success.slice(0, 10)}... <ExternalLink size={12} />
+                          </a>
+                        ) : (
+                          <span className={result.transaction_success ? 'text-emerald-500' : 'text-red-500'}>
+                            {result.transaction_success ? 'ATOMIC_SUCCESS' : 'SETTLEMENT_ERROR'}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    {result.solana_init_tx && (
+                      <div className="flex justify-between items-center group pt-2 border-t border-white/5">
+                        <span className="text-[10px] text-muted group-hover:text-accent transition-colors">SOL_ATTESTATION_INIT:</span>
+                        <a
+                          href={`https://explorer.solana.com/tx/${result.solana_init_tx}?cluster=devnet`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-accent text-[11px] font-mono hover:underline flex items-center gap-1"
+                        >
+                          {result.solana_init_tx.slice(0, 8)}... <ExternalLink size={10} />
+                        </a>
+                      </div>
+                    )}
+                    {result.solana_seal_tx && (
+                      <div className="flex justify-between items-center group">
+                        <span className="text-[10px] text-muted group-hover:text-accent transition-colors">SOL_REPUTATION_SEAL:</span>
+                        <a
+                          href={`https://explorer.solana.com/tx/${result.solana_seal_tx}?cluster=devnet`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-accent text-[11px] font-mono hover:underline flex items-center gap-1"
+                        >
+                          {result.solana_seal_tx.slice(0, 8)}... <ExternalLink size={10} />
+                        </a>
                       </div>
                     )}
                   </div>
@@ -307,6 +363,32 @@ function VerificationForm() {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Protocol Network Status */}
+      <div className="mt-12 p-6 glass-panel border-white/5 bg-white/2">
+        <div className="flex items-center gap-4 mb-6">
+          <Activity size={20} className="text-secondary" />
+          <h4 className="text-sm font-black text-white uppercase tracking-widest">Live Protocol Registry</h4>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="space-y-1">
+            <p className="text-[10px] text-muted font-bold uppercase">Solana Forensic Engine</p>
+            <p className="text-xs font-mono text-secondary break-all">CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe</p>
+          </div>
+          <div className="space-y-1">
+            <p className="text-[10px] text-muted font-bold uppercase">Solana HALE Escrow</p>
+            <p className="text-xs font-mono text-secondary break-all">BCKogk1bxSti471AAyrWu3fEBLtbrE3nrwopKZrauEu6</p>
+          </div>
+          <div className="space-y-1">
+            <p className="text-[10px] text-muted font-bold uppercase">Arc Vault Factory</p>
+            <p className="text-xs font-mono text-secondary break-all">0x4059fDf0bd9b48F4864cB3949A3c5892df0C2e70</p>
+          </div>
+          <div className="space-y-1">
+            <p className="text-[10px] text-muted font-bold uppercase">Arc Forensic Escrow</p>
+            <p className="text-xs font-mono text-secondary break-all">0x57c8a6466b097B33B3d98Ccd5D9787d426Bfb539</p>
+          </div>
         </div>
       </div>
 

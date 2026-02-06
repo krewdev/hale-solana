@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
-import { Wallet, Link, Zap, Shield, CheckCircle, AlertTriangle, ArrowRight, Copy, Check, Rocket, MessageSquare, ExternalLink, ChevronRight } from 'lucide-react'
+import { Wallet, Link, Zap, Shield, CheckCircle, Activity, AlertTriangle, ArrowRight, Copy, Check, Rocket, MessageSquare, ExternalLink, ChevronRight } from 'lucide-react'
 import factoryAbi from '../factory_abi.json'
 import erc20Abi from '../erc20_abi.json'
 import { NETWORKS, connectWallet, switchNetwork } from '../utils/wallet';
@@ -24,6 +24,8 @@ function Deployment() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [deployedAddress, setDeployedAddress] = useState('')
+  const [deployTxHash, setDeployTxHash] = useState('')
+  const [fundTxHash, setFundTxHash] = useState('')
   const [copied, setCopied] = useState(false)
 
   // Requirement Inputs
@@ -99,6 +101,7 @@ function Deployment() {
 
       if (newEscrowAddress) {
         setDeployedAddress(newEscrowAddress);
+        setDeployTxHash(tx.hash);
         setActiveStep('requirements');
       } else {
         throw new Error("Escrow address not found in receipt.");
@@ -147,6 +150,7 @@ function Deployment() {
         overrides2
       );
       await tx2.wait();
+      setFundTxHash(tx2.hash);
 
       // 3. GENERATE LINK
       if (!formData.telegram) {
@@ -175,10 +179,32 @@ function Deployment() {
       {/* Header */}
       <div className="page-header mb-8">
         <div className="flex items-center gap-4 mb-4">
-          <div className="p-3 bg-emerald-500/10 rounded-xl"><Zap size={32} className="text-emerald-400" /></div>
+          <div className="p-3 bg-emerald-500/10 rounded-xl"><Rocket size={32} className="text-emerald-400" /></div>
           <div>
-            <h1 className="text-3xl font-black text-white tracking-tight">Escrow Factory</h1>
-            <p className="text-gray-400">Deploy autonomous, AI-verified payment vaults.</p>
+            <h1 className="text-3xl font-black text-white tracking-tight uppercase italic">Vault Factory</h1>
+            <p className="text-gray-400 text-sm">Deploy autonomous, AI-verified escrow vaults on the Circle Arc network.</p>
+          </div>
+        </div>
+
+        {/* Protocol Context */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="bg-white/5 p-4 rounded-xl border border-white/5">
+            <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs mb-1 uppercase tracking-widest">
+              <Shield size={12} /> Step 1: Deploy
+            </div>
+            <p className="text-[10px] text-gray-400">Mint a unique, trustless escrow contract for your specific transaction.</p>
+          </div>
+          <div className="bg-white/5 p-4 rounded-xl border border-white/5">
+            <div className="flex items-center gap-2 text-blue-400 font-bold text-xs mb-1 uppercase tracking-widest">
+              <Zap size={12} /> Step 2: Ignite
+            </div>
+            <p className="text-[10px] text-gray-400">Deposit funds and stipulate exact requirements for the HALE Oracle.</p>
+          </div>
+          <div className="bg-white/5 p-4 rounded-xl border border-white/5">
+            <div className="flex items-center gap-2 text-purple-400 font-bold text-xs mb-1 uppercase tracking-widest">
+              <Activity size={12} /> Step 3: Audit
+            </div>
+            <p className="text-[10px] text-gray-400">The Oracle verifies the delivery. Funds release automatically upon 'PASS'.</p>
           </div>
         </div>
 
@@ -201,11 +227,12 @@ function Deployment() {
       {/* STEP 1: DEPLOY */}
       {activeStep === 'select' && (
         <div className="glass-panel p-8">
-          <h2 className="text-xl font-bold text-white mb-6">1. Deploy Vault</h2>
+          <h2 className="text-xl font-black text-white mb-2 uppercase italic text-emerald-400">01. Initialize Ledger</h2>
+          <p className="text-gray-500 text-sm mb-6">Select your primary wallet to authorize the contract deployment on Arc.</p>
 
           <div className="grid gap-4 mb-8">
             {WALLET_TYPES.map((wallet) => (
-              <button key={wallet.id} className="wallet-button p-6 relative group" disabled={loading} onClick={() => {
+              <button key={wallet.id} className="wallet-button p-6 relative group border border-white/5 hover:border-emerald-500/30 transition-all bg-white/5 rounded-2xl" disabled={loading} onClick={() => {
                 if (wallet.id === 'metamask') connectAndDeployFactory();
                 else setError("Please use MetaMask for this demo.");
               }}>
@@ -242,9 +269,13 @@ function Deployment() {
       {activeStep === 'requirements' && (
         <div className="glass-panel p-8">
           <div className="flex justify-between items-start mb-6">
-            <h2 className="text-xl font-bold text-white">2. Fund & Stipulate</h2>
-            <div className="px-3 py-1 bg-emerald-900/30 border border-emerald-500/30 rounded-lg text-xs font-mono text-emerald-400">
-              {deployedAddress.slice(0, 6)}...{deployedAddress.slice(-4)}
+            <div>
+              <h2 className="text-xl font-black text-white uppercase italic text-blue-400">02. Stipulate Requirements</h2>
+              <p className="text-gray-500 text-xs mt-1">Define the forensic parameters for the AI auditor.</p>
+            </div>
+            <div className="px-3 py-1 bg-emerald-900/30 border border-emerald-500/30 rounded-lg text-xs font-mono text-emerald-400 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+              VAULT: {deployedAddress.slice(0, 6)}...{deployedAddress.slice(-4)}
             </div>
           </div>
 
@@ -351,7 +382,31 @@ function Deployment() {
               <div>
                 <h3 className="text-emerald-400 font-bold mb-1">Notification Sent</h3>
                 <p className="text-sm text-gray-400">We've notified <strong>{formData.telegram}</strong> with instructions and their unique OTP.</p>
+                {fundTxHash && (
+                  <a
+                    href={`${NETWORKS.ARC_TESTNET.explorer}/tx/${fundTxHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center gap-1 text-[10px] text-emerald-500/60 hover:text-emerald-400 transition-colors uppercase font-black"
+                  >
+                    View Fund Transaction <ExternalLink size={10} />
+                  </a>
+                )}
               </div>
+            </div>
+          )}
+
+          {/* Transaction Info for non-telegram as well */}
+          {!formData.telegram && fundTxHash && (
+            <div className="mb-4 text-center">
+              <a
+                href={`${NETWORKS.ARC_TESTNET.explorer}/tx/${fundTxHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[10px] text-gray-500 hover:text-emerald-400 transition-colors uppercase font-black"
+              >
+                View Settlement Transaction <ExternalLink size={10} />
+              </a>
             </div>
           )}
 

@@ -115,6 +115,36 @@ function DeliverySubmission() {
                     </p>
                 </div>
 
+                {/* Judge Demo Flow Banner */}
+                <div style={{
+                    marginBottom: '32px',
+                    padding: '16px',
+                    background: 'rgba(16, 185, 129, 0.1)',
+                    border: '1px solid rgba(16, 185, 129, 0.2)',
+                    borderRadius: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    maxWidth: '800px',
+                    margin: '0 auto 32px'
+                }}>
+                    <div style={{
+                        padding: '8px',
+                        background: '#10b981',
+                        borderRadius: '8px',
+                        color: '#000',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+                    </div>
+                    <div>
+                        <div style={{ fontSize: '12px', fontWeight: '900', color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Hackathon Judge Demo Flow</div>
+                        <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>For judging, bypass the Telegram bot and use Master OTP: <strong style={{ color: '#10b981', fontFamily: 'monospace', letterSpacing: '0.1em', background: 'rgba(16, 185, 129, 0.1)', padding: '2px 6px', borderRadius: '4px' }}>88888</strong></div>
+                    </div>
+                </div>
+
                 <div className="form-container" style={{ maxWidth: '800px', margin: '0 auto' }}>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">

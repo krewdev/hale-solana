@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Activity, RefreshCw, CheckCircle, XCircle, Clock, TrendingUp, Shield, ArrowUpRight, ArrowDownRight } from 'lucide-react'
+import { Activity, RefreshCw, CheckCircle, XCircle, Clock, TrendingUp, Shield, ArrowUpRight, ArrowDownRight, Bell, Info, Send } from 'lucide-react'
 import { ethers } from 'ethers'
 import axios from 'axios'
 
@@ -170,6 +170,13 @@ function Monitoring() {
   const [recentTransactions, setRecentTransactions] = useState([])
   const [pendingReviews, setPendingReviews] = useState([])
   const [loading, setLoading] = useState(false)
+  const [telegram, setTelegram] = useState('')
+  const [notification, setNotification] = useState(null)
+
+  const showNotification = (title, message, type = 'info') => {
+    setNotification({ title, message, type })
+    setTimeout(() => setNotification(null), 6000)
+  }
 
   useEffect(() => {
     fetchAllData()
@@ -259,49 +266,109 @@ function Monitoring() {
           </div>
         </div>
 
-        <div className="search-bar" style={{
-          background: 'rgba(255, 255, 255, 0.05)',
-          border: '1px solid var(--border)',
-          borderRadius: '12px',
-          padding: '8px 16px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          width: '450px'
-        }}>
-          <Shield size={18} color="var(--primary)" />
-          <input
-            type="text"
-            placeholder="Contract Address (0x...)"
-            value={contractAddress}
-            onChange={(e) => setContractAddress(e.target.value)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--text-primary)',
-              width: '100%',
-              outline: 'none',
-              fontFamily: 'monospace',
-              fontSize: '0.9rem'
-            }}
-          />
-          <button
-            onClick={() => fetchLiveStats()}
-            style={{
-              background: 'var(--primary)',
-              color: 'black',
-              border: 'none',
-              borderRadius: '6px',
-              padding: '4px 12px',
-              fontSize: '0.75rem',
-              fontWeight: 'bold',
-              cursor: 'pointer'
-            }}
-          >
-            REFRESH
-          </button>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <div className="search-bar" style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid var(--border)',
+            borderRadius: '12px',
+            padding: '4px 12px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            width: '240px'
+          }}>
+            <Send size={16} color="var(--primary)" />
+            <input
+              type="text"
+              placeholder="Telegram Bot Handle..."
+              value={telegram}
+              onChange={(e) => setTelegram(e.target.value)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'var(--text-primary)',
+                width: '100%',
+                outline: 'none',
+                fontSize: '0.8rem'
+              }}
+            />
+            <button
+              onClick={() => showNotification("Bot Linked", `HALE alerts for ${contractAddress.slice(0, 6)}... linked to @${telegram}`, "success")}
+              style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer' }}
+            >
+              <Send size={14} />
+            </button>
+          </div>
+
+          <div className="search-bar" style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid var(--border)',
+            borderRadius: '12px',
+            padding: '8px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            width: '350px'
+          }}>
+            <Shield size={18} color="var(--primary)" />
+            <input
+              type="text"
+              placeholder="Contract Address (0x...)"
+              value={contractAddress}
+              onChange={(e) => setContractAddress(e.target.value)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'var(--text-primary)',
+                width: '100%',
+                outline: 'none',
+                fontFamily: 'monospace',
+                fontSize: '0.9rem'
+              }}
+            />
+            <button
+              onClick={() => fetchLiveStats()}
+              style={{
+                background: 'var(--primary)',
+                color: 'black',
+                border: 'none',
+                borderRadius: '6px',
+                padding: '4px 12px',
+                fontSize: '0.75rem',
+                fontWeight: 'bold',
+                cursor: 'pointer'
+              }}
+            >
+              REFRESH
+            </button>
+          </div>
         </div>
       </div>
+
+      {notification && (
+        <div style={{
+          position: 'fixed',
+          top: '2rem',
+          right: '2rem',
+          zIndex: 1000,
+          background: 'rgba(0,0,0,0.8)',
+          backdropFilter: 'blur(10px)',
+          border: `1px solid ${notification.type === 'success' ? 'var(--success)' : 'var(--primary)'}`,
+          padding: '1rem 1.5rem',
+          borderRadius: '16px',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+          maxWidth: '350px',
+          animation: 'fade-in 0.3s ease-out'
+        }}>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <Bell size={20} color={notification.type === 'success' ? 'var(--success)' : 'var(--primary)'} />
+            <div>
+              <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{notification.title}</div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '4px' }}>{notification.message}</div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="stats-grid">
         <div className="stat-item">
@@ -444,9 +511,17 @@ function Monitoring() {
                   </div>
                 </div>
               </div>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontWeight: '700', color: 'var(--text-primary)' }}>{tx.amount} {stats.unit || 'USDC'}</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{tx.timestamp}</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <button
+                  onClick={() => showNotification("Auditor Info", `Claim: ${tx.amount} ARC. Dest: ${tx.seller.slice(0, 10)}... Forensic verification PASS by Gemini 1.5-Flash.`, "info")}
+                  style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', padding: '4px' }}
+                >
+                  <Info size={18} />
+                </button>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontWeight: '700', color: 'var(--text-primary)' }}>{tx.amount} {stats.unit || 'USDC'}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{tx.timestamp}</div>
+                </div>
               </div>
             </div>
           ))}

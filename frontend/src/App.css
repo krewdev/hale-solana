@@ -505,3 +505,86 @@
 .stat-value {
   letter-spacing: -0.02em;
 }
+
+/* --- PROTOCOL INTEGRITY FOOTER --- */
+.protocol-integrity-footer {
+  width: 100%;
+  margin-top: 4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 3rem 2rem;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.integrity-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.integrity-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.integrity-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.integrity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.integrity-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.integrity-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.integrity-address {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: var(--primary);
+  background: rgba(129, 140, 248, 0.05);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(129, 140, 248, 0.1);
+  word-break: break-all;
+  transition: all 0.2s ease;
+}
+
+.integrity-address:hover {
+  background: rgba(129, 140, 248, 0.1);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+@keyframes fadeInDelayed {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-delayed {
+  animation: fadeInDelayed 1s ease-out 0.4s both;
+}

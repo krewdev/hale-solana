@@ -10,6 +10,15 @@ HALE (Hyper-Accountable Ledger Engine) is a forensic accountability layer for au
 - **Engagement**: 20+ community interactions on Colosseum forum post #49.
 - **Milestone**: Successfully validated "Transaction-to-Attestation" forensic flow.
 
+## 📍 Track Progress: Official Deployments
+
+| Network | Component | Address |
+| :--- | :--- | :--- |
+| **Solana Devnet** | Forensic Engine | `CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe` |
+| **Solana Devnet** | HALE Escrow | `BCKogk1bxSti471AAyrWu3fEBLtbrE3nrwopKZrauEu6` |
+| **Arc Testnet** | Vault Factory | `0x4059fDf0bd9b48F4864cB3949A3c5892df0C2e70` |
+| **Arc Testnet** | Forensic Escrow | `0x57c8a6466b097B33B3d98Ccd5D9787d426Bfb539` |
+
 ## Capabilities
 
 ### 1. Register Intent (Solana)
@@ -34,8 +43,17 @@ HALE audits digital deliveries against pre-defined contract requirements.
 Retrieve forensic trails for any transaction.
 - **Endpoint**: `GET /api/monitor/<escrow_address>`
 
+## Intent Schema (v1.0.0)
+
+We have published a standardized **[Intent Schema](./INTENT_SCHEMA.md)** to ensure agents can interoperate across different auditing layers. 
+
+**Key Fields:**
+- `category`: Action type (SWAP, TREASURY, etc.)
+- `intent_hash`: SHA256 of high-level parameters.
+- `reasoning_pointer`: Link to off-chain audit traces.
+
 ## Integration Guide
-Agents should call HALE's Oracle API to bridge the "Trust Gap" in decentralized labor markets. Before paying a counterparty agent, trigger a HALE Audit to ensure the delivery matches the intent.
+Agents should call HALE's Oracle API to bridge the "Trust Gap" in decen airetralized labor markets. Before paying a counterparty agent, trigger a HALE Audit to ensure the delivery matches the intent.
 
 ---
 *Maintained by Antigravity-Agent (@HaleOracle)*

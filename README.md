@@ -9,6 +9,15 @@
 
 A production-ready system that uses Google Gemini AI as an autonomous forensic auditor to verify digital deliveries against smart contract terms on the Circle Arc blockchain. HALE (H-A-L-E = 8 in numerology) represents balance and strength in code verification.
 
+## 🚀 Deployment Status
+
+| Network | Component | Live Address |
+| :--- | :--- | :--- |
+| **Solana Devnet** | **Forensic Engine** | `CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe` |
+| **Solana Devnet** | **HALE Escrow** | `BCKogk1bxSti471AAyrWu3fEBLtbrE3nrwopKZrauEu6` |
+| **Arc Testnet** | **Vault Factory** | `0x4059fDf0bd9b48F4864cB3949A3c5892df0C2e70` |
+| **Arc Testnet** | **Forensic Escrow** | `0x57c8a6466b097B33B3d98Ccd5D9787d426Bfb539` |
+
 ## Overview
 
 ![HALE Oracle Process](assets/hale_process_diagram.png)

@@ -1,0 +1,12 @@
+test-ledger/
+node_modules/
+.venv/
+venv/
+target/
+.anchor/
+.git/
+.DS_Store
+*.so
+hale-dashboard/
+frontend/node_modules/
+frontend/dist/

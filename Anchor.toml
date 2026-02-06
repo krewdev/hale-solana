@@ -5,7 +5,7 @@ package_manager = "yarn"
 resolution = true
 skip-lint = false
 
-[programs.localnet]
+[programs.devnet]
 hale_escrow = "BCKogk1bxSti471AAyrWu3fEBLtbrE3nrwopKZrauEu6"
 hale_solana = "CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe"
 
@@ -13,7 +13,7 @@ hale_solana = "CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

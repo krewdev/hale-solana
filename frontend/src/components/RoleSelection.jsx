@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, ArrowRight, Box } from 'lucide-react';
+import { Shield, Send, CheckCircle, XCircle, AlertCircle, Loader, Plus, Trash2, Cpu, Fingerprint, RefreshCw, Zap, Lock, Terminal, Activity, ExternalLink, ArrowRight, Box } from 'lucide-react';
 import '../App.css'; // Ensure CSS is applied
 
 export default function RoleSelection() {
@@ -77,6 +77,30 @@ export default function RoleSelection() {
                                     Setup Notifications (Telegram) <ArrowRight size={12} />
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Protocol Integrity Footer */}
+            <div className="protocol-integrity-footer animate-fade-in-delayed">
+                <div className="integrity-container">
+                    <div className="integrity-header">
+                        <Activity size={16} className="text-accent" />
+                        <span className="integrity-title">PROTOCOL INTEGRITY DEFLOYMENTS (DEVNET)</span>
+                    </div>
+                    <div className="integrity-grid">
+                        <div className="integrity-item">
+                            <span className="integrity-label">SOLANA FORENSIC ENGINE</span>
+                            <code className="integrity-address">CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe</code>
+                        </div>
+                        <div className="integrity-item">
+                            <span className="integrity-label">SOLANA HALE ESCROW</span>
+                            <code className="integrity-address">BCKogk1bxSti471AAyrWu3fEBLtbrE3nrwopKZrauEu6</code>
+                        </div>
+                        <div className="integrity-item">
+                            <span className="integrity-label">ARC VAULT FACTORY</span>
+                            <code className="integrity-address">0x4059fDf...C2e70</code>
                         </div>
                     </div>
                 </div>

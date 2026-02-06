@@ -1,0 +1,19 @@
+[project]
+name = "app"
+version = "0.1.0"
+requires-python = ">=3.12"
+classifiers = [
+  "Private :: Do Not Upload",
+]
+dependencies = [
+    "flask>=3.0.0",
+    "flask-cors>=4.0.0",
+    "google-generativeai>=0.8.3",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "solana>=0.30.0",
+    "solders>=0.18.0",
+    "uvicorn>=0.24",
+    "web3>=6.0.0",
+    "werkzeug>=1.0.1",
+]
