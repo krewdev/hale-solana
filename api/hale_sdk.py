@@ -30,11 +30,15 @@ class HaleSDK:
             A dictionary containing the audit result, confidence score, and forensic reasoning.
         """
         payload = {
-            "intent": intent,
-            "requirement": requirement,
-            "code": delivery_content,
-            "recipient": seller_address,
-            "contract": contract_address
+            "contract_data": {
+                "intent": intent,
+                "requirement": requirement,
+                "Delivery_Content": delivery_content,
+                "Contract_Terms": intent,
+                "Acceptance_Criteria": [requirement]
+            },
+            "seller_address": seller_address,
+            "contract_address": contract_address
         }
         
         response = requests.post(f"{self.api_url}/api/verify", json=payload)
