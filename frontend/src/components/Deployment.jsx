@@ -130,12 +130,29 @@ function Deployment() {
       const feeData = await provider.getFeeData();
 
       // 1. DEPOSIT (Native Token)
-      console.log("Depositing funds...");
+      console.log("Depositing funds to:", deployedAddress);
+      const balance = await provider.getBalance(signer.address);
+      const amountWei = ethers.parseEther(formData.amount);
+
+      console.log(`Current Balance: ${ethers.formatEther(balance)} USDC`);
+      console.log(`Amount to Deposit: ${formData.amount} USDC`);
+
+      if (balance < amountWei) {
+        throw new Error(`Insufficient balance. You have ${ethers.formatEther(balance)} USDC but need at least ${formData.amount} USDC + gas.`);
+      }
+
+      if (formData.sellerAddress.toLowerCase() === signer.address.toLowerCase()) {
+        throw new Error("You cannot set yourself as the seller. Please use a different address for the recipient.");
+      }
+
       const overrides1 = {
-        value: ethers.parseEther(formData.amount),
-        gasPrice: feeData.gasPrice
+        value: amountWei,
+        gasPrice: feeData.gasPrice,
+        // Manual gas limit fallback if estimation fails
+        gasLimit: 300000
       };
 
+      console.log("Executing deposit...");
       const tx1 = await escrow.deposit(formData.sellerAddress, overrides1);
       await tx1.wait();
 

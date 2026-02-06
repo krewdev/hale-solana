@@ -6,7 +6,7 @@ export const NETWORKS = {
         chainId: "0x4cef52", // Actual RPC Chain ID: 5041986
         name: "Arc Testnet V2",
         usdcAddress: "0x3600000000000000000000000000000000000000",
-        factoryAddress: "0x33e9915F122135B88fDEba6e8312f0cD8E678098",
+        factoryAddress: "0x4059fDf0bd9b48F4864cB3949A3c5892df0C2e70",
         rpc: "https://rpc.testnet.arc.network?v=2",
         symbol: "USDC",
         explorer: "https://testnet.arcscan.app",
