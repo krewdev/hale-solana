@@ -44,7 +44,7 @@ export default function App() {
 
             // Arc Fetch (Live Unmocked)
             setFetchingArc(true);
-            const arcResp = await fetch("http://127.0.0.1:8000/api/monitor/0x57c8a6466b097B33B3d98Ccd5D9787d426Bfb539");
+            const arcResp = await fetch("http://127.0.0.1:5001/api/monitor/0x57c8a6466b097B33B3d98Ccd5D9787d426Bfb539");
             if (arcResp.ok) {
                 const data = await arcResp.json();
                 setArcStats(data);
