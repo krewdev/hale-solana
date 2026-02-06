@@ -509,6 +509,50 @@ function Monitoring() {
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                     Destination: <span style={{ fontFamily: 'monospace' }}>{tx.seller}</span>
                   </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
+                    {tx.solana_init && (
+                      <a
+                        href={`https://explorer.solana.com/tx/${tx.solana_init}?cluster=devnet`}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          fontSize: '10px',
+                          padding: '2px 8px',
+                          background: 'rgba(34, 211, 238, 0.1)',
+                          border: '1px solid rgba(34, 211, 238, 0.3)',
+                          borderRadius: '6px',
+                          color: 'var(--primary)',
+                          textDecoration: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}
+                      >
+                        SOL_INIT <ArrowUpRight size={10} />
+                      </a>
+                    )}
+                    {tx.solana_seal && (
+                      <a
+                        href={`https://explorer.solana.com/tx/${tx.solana_seal}?cluster=devnet`}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          fontSize: '10px',
+                          padding: '2px 8px',
+                          background: 'rgba(52, 211, 153, 0.1)',
+                          border: '1px solid rgba(52, 211, 153, 0.3)',
+                          borderRadius: '6px',
+                          color: 'var(--success)',
+                          textDecoration: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}
+                      >
+                        SOL_REPUTATION <ArrowUpRight size={10} />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
