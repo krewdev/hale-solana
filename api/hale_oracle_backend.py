@@ -125,8 +125,23 @@ class HaleOracle:
             try:
                 if USE_NEW_API:
                     # New google.genai API
+                    if not gemini_api_key:
+                        raise ValueError("No Gemini API Key provided")
                     self.client = genai.Client(api_key=gemini_api_key)
-                    self.model_name = 'gemini-1.5-flash'
+                    
+                    # Detect best available model
+                    self.model_name = 'gemini-1.5-flash' # Default
+                    try:
+                        resp = self.client.models.list()
+                        available = [m.name for m in resp]
+                        model_prefs = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-pro']
+                        for pref in model_prefs:
+                            if pref in available or f'models/{pref}' in available:
+                                self.model_name = pref
+                                break
+                        print(f"[HALE Oracle] New API: Selected model {self.model_name}")
+                    except Exception as e:
+                        print(f"[HALE Oracle] New API model detection failed: {e}")
                 else:
                     # Legacy google.generativeai API
                     if not gemini_api_key:
@@ -135,27 +150,26 @@ class HaleOracle:
                     genai.configure(api_key=gemini_api_key)
                     
                     # Try to list models to verify connectivity and auth
-                    # If this fails, we assume network/auth issues and switch to mock
                     try:
                         list(genai.list_models(page_size=1))
                     except Exception as e:
                         print(f"[HALE Oracle] Network/Auth check failed: {e}")
-                        print("[HALE Oracle] switching to MOCK MODE for resilience.")
-                        self.mock_mode = True
+                        raise e
 
                     if not self.mock_mode:
-                        self.model_name = 'gemini-pro' # Fallback default
+                        self.model_name = 'gemini-1.5-flash' # Default
                         try:
                             # Try newer models first
                             available_models = [m.name for m in genai.list_models() 
                                               if 'generateContent' in m.supported_generation_methods]
-                            model_preferences = ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash', 'gemini-pro']
+                            model_preferences = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-pro']
                             for pref in model_preferences:
-                                if f'models/{pref}' in available_models:
+                                if pref in available_models or f'models/{pref}' in available_models:
                                     self.model_name = pref
                                     break
                         except Exception:
                             pass
+                        print(f"[HALE Oracle] Legacy API: Selected model {self.model_name}")
             except Exception as e:
                 print(f"[HALE Oracle] Failed to initialize Gemini API: {e}")
                 print("[HALE Oracle] Switching to MOCK MODE.")

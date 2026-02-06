@@ -29,6 +29,9 @@ verdict_store = {} # {seller_address: verdict_data}
 recent_verifications = [] # Tracks last 10 successful verifications
 
 # Initialize Oracle
+print(f"DEBUG: GEMINI_API_KEY present: {bool(GEMINI_API_KEY)}")
+if GEMINI_API_KEY:
+    print(f"DEBUG: Key starts with: {GEMINI_API_KEY[:6]}...")
 oracle = HaleOracle(GEMINI_API_KEY, ARC_RPC_URL)
 
 def generate_otp():
