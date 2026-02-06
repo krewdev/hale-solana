@@ -273,10 +273,15 @@ function Deployment() {
               <h2 className="text-xl font-black text-white uppercase italic text-blue-400">02. Stipulate Requirements</h2>
               <p className="text-gray-500 text-xs mt-1">Define the forensic parameters for the AI auditor.</p>
             </div>
-            <div className="px-3 py-1 bg-emerald-900/30 border border-emerald-500/30 rounded-lg text-xs font-mono text-emerald-400 flex items-center gap-2">
+            <a
+              href={`${NETWORKS.ARC_TESTNET.explorer}/address/${deployedAddress}`}
+              target="_blank"
+              rel="noreferrer"
+              className="px-3 py-1 bg-emerald-900/30 border border-emerald-500/30 rounded-lg text-xs font-mono text-emerald-400 flex items-center gap-2 hover:bg-emerald-900/50 transition-all"
+            >
               <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-              VAULT: {deployedAddress.slice(0, 6)}...{deployedAddress.slice(-4)}
-            </div>
+              VAULT: {deployedAddress}
+            </a>
           </div>
 
           <div className="space-y-6">

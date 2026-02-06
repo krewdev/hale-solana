@@ -92,15 +92,21 @@ export default function RoleSelection() {
                     <div className="integrity-grid">
                         <div className="integrity-item">
                             <span className="integrity-label">SOLANA FORENSIC ENGINE</span>
-                            <code className="integrity-address">CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe</code>
+                            <a href="https://explorer.solana.com/address/CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe?cluster=devnet" target="_blank" rel="noreferrer" className="integrity-address">
+                                CnwQj2k...9yn9MMe
+                            </a>
                         </div>
                         <div className="integrity-item">
                             <span className="integrity-label">SOLANA HALE ESCROW</span>
-                            <code className="integrity-address">BCKogk1bxSti471AAyrWu3fEBLtbrE3nrwopKZrauEu6</code>
+                            <a href="https://explorer.solana.com/address/BCKogk1bxSti471AAyrWu3fEBLtbrE3nrwopKZrauEu6?cluster=devnet" target="_blank" rel="noreferrer" className="integrity-address">
+                                BCKogk1...rauEu6
+                            </a>
                         </div>
                         <div className="integrity-item">
                             <span className="integrity-label">ARC VAULT FACTORY</span>
-                            <code className="integrity-address">0x4059fDf...C2e70</code>
+                            <a href="https://explorer.testnet.arc.network/address/0x4059fDf0bd9b48F4864cB3949A3c5892df0C2e70" target="_blank" rel="noreferrer" className="integrity-address">
+                                0x4059f...2e70
+                            </a>
                         </div>
                     </div>
                 </div>

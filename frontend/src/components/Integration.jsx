@@ -14,43 +14,67 @@ function Integration() {
 
   const integrations = [
     {
-      id: 'python',
-      title: 'Python Integration',
-      icon: Terminal,
-      description: 'Integrate HALE Oracle into your Python applications',
-      code: `from hale_oracle_backend import HaleOracle
-import os
+      id: 'sdk',
+      title: 'HALE Python SDK',
+      icon: Package,
+      description: 'The easiest way to integrate HALE into your agentic workflow',
+      code: `from hale_sdk import HaleSDK
 
-# Initialize oracle
-oracle = HaleOracle(
-    gemini_api_key=os.getenv('GEMINI_API_KEY'),
-    arc_rpc_url=os.getenv('ARC_RPC_URL')
+# Initialize SDK
+sdk = HaleSDK(api_url="https://hale-oracle.vercel.app")
+
+# Perform a Forensic Audit
+# This automatically triggers Solana Attestation + Arc Settlement
+result = sdk.verify_delivery(
+    intent="Create a secure JWT verify function",
+    requirement="Must use HS256 and validate expiration",
+    delivery_content="def verify_token(token): ...",
+    seller_address="0x1c9E5388037389D39062D71C8072eb47363E5907"
 )
 
-# Verify a delivery
-# Example environment variables for USDC integration:
-# USDC_RPC_URL=https://rpc.testnet.arc.network
-# USDC_ESCROW_ADDRESS=0x...
-contract_data = {
-    "transaction_id": "tx_0x123abc_usdc",
-    "Contract_Terms": "Generate a Python script to fetch USDC price",
-    "Acceptance_Criteria": [
-        "Must be written in Python 3",
-        "Must handle API errors gracefully",
-        "Must print the price to console"
-    ],
-    "Delivery_Content": "import requests\\n\\ndef get_usdc_price():\\n    ..."
-}
+print(f"Verdict: {result['verdict']}")
+print(f"Solana Audit Link: https://explorer.solana.com/tx/{result['solana_seal_tx']}?cluster=devnet")`
+    },
+    {
+      id: 'solana-forensics',
+      title: 'Solana Forensic Attestation (Native)',
+      icon: Terminal,
+      description: 'Interact directly with the Solana Forensic Engine for immutable reputation',
+      code: `# Use the HaleOracle core for native Solana operations
+from hale_oracle_backend import HaleOracle
 
-result = oracle.verify_delivery(contract_data)
+oracle = HaleOracle(gemini_api_key="...")
 
-if result['verdict'] == 'PASS' and result['release_funds']:
-    # Trigger smart contract release
-    oracle.trigger_smart_contract(
-        verdict=result,
-        seller_address="0xSellerAddress",
-        contract_address="0xContractAddress"
-    )`
+# 1. Initialize Forensic Account on Solana
+init_tx = oracle.initialize_solana_attestation("unique_job_id_123")
+
+# 2. Perform Audit then Seal Reputation
+# This anchors the 'Audited' state to the Solana blockchain
+seal_tx = oracle.seal_solana_attestation("unique_job_id_123", is_valid=True)
+
+print(f"Reputation anchored: {seal_tx}")`
+    },
+    {
+      id: 'arc-settlement',
+      title: 'Arc Settlement Integration',
+      icon: Globe,
+      description: 'Execute native USDC/ARC settlements based on Forensic verdicts',
+      code: `// Trigger Arc Settlement after Forensic Check
+const response = await fetch('/api/verify', {
+  method: 'POST',
+  body: JSON.stringify({
+    intent: "AI Research Task",
+    requirement: "3 unique insights",
+    code: "...",
+    recipient: "0xSellerAddress",
+    contract: "0xEscrowVaultAddress" // Arc Escrow Vault
+  })
+});
+
+const result = await response.json();
+if (result.verdict === 'PASS' && result.transaction_success) {
+  console.log('Funds released on Arc:', result.transaction_success);
+}`
     },
     {
       id: 'javascript',
