@@ -278,13 +278,13 @@ function Deployment() {
                 href={`${NETWORKS.ARC_TESTNET.explorer}/address/${deployedAddress}`}
                 target="_blank"
                 rel="noreferrer"
-                className="px-3 py-1 bg-emerald-900/30 border border-emerald-500/30 rounded-lg text-xs font-mono text-emerald-400 flex items-center gap-2 hover:bg-emerald-900/50 transition-all"
+                className="px-4 py-2 bg-emerald-900/40 border-2 border-emerald-500/50 rounded-xl text-xs font-mono text-emerald-400 flex items-center gap-2 hover:scale-105 transition-all shadow-[0_0_20px_rgba(16,185,129,0.2)]"
               >
-                <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                VAULT: {deployedAddress}
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                VAULT: {deployedAddress.slice(0, 6)}...{deployedAddress.slice(-4)}
               </a>
-              <div className="px-3 py-1 bg-cyan-900/30 border border-cyan-500/30 rounded-lg text-[10px] font-black text-cyan-400 flex items-center gap-1 uppercase tracking-tighter">
-                <Shield size={10} /> Forensic Protection by Solana
+              <div className="px-4 py-2 bg-cyan-500/10 border-2 border-cyan-500/30 rounded-xl text-xs font-black text-cyan-400 flex items-center gap-2 uppercase tracking-tighter shadow-[0_0_15px_rgba(34,211,238,0.1)]">
+                <Shield size={14} className="animate-pulse" /> HALE Forensic Guard: Active
               </div>
             </div>
           </div>
@@ -430,6 +430,44 @@ function Deployment() {
           </div>
         </div>
       )}
+
+      {/* Protocol Registry Footer */}
+      <div className="mt-12 p-8 glass-panel border-white/5 bg-white/2">
+        <div className="flex items-center gap-4 mb-8">
+          <Activity size={24} className="text-secondary" />
+          <h4 className="text-lg font-black text-white uppercase tracking-[0.2em]">Protocol Global Registry</h4>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="space-y-2">
+            <p className="text-[10px] text-muted font-black uppercase tracking-widest">Solana Forensic Engine</p>
+            <a href="https://explorer.solana.com/address/CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe?cluster=devnet" target="_blank" rel="noreferrer"
+              className="text-xs font-mono text-secondary hover:text-cyan-400 transition-colors break-all flex items-center gap-2">
+              CnwQj2k...9yn9MMe <ExternalLink size={10} />
+            </a>
+          </div>
+          <div className="space-y-2">
+            <p className="text-[10px] text-muted font-black uppercase tracking-widest">Solana HALE Escrow</p>
+            <a href="https://explorer.solana.com/address/BCKogk1bxSti471AAyrWu3fEBLtbrE3nrwopKZrauEu6?cluster=devnet" target="_blank" rel="noreferrer"
+              className="text-xs font-mono text-secondary hover:text-cyan-400 transition-colors break-all flex items-center gap-2">
+              BCKogk1...rauEu6 <ExternalLink size={10} />
+            </a>
+          </div>
+          <div className="space-y-2">
+            <p className="text-[10px] text-muted font-black uppercase tracking-widest">Arc Vault Factory</p>
+            <a href="https://explorer.testnet.arc.network/address/0x4059fDf0bd9b48F4864cB3949A3c5892df0C2e70" target="_blank" rel="noreferrer"
+              className="text-xs font-mono text-secondary hover:text-emerald-400 transition-colors break-all flex items-center gap-2">
+              0x4059f...2e70 <ExternalLink size={10} />
+            </a>
+          </div>
+          <div className="space-y-2">
+            <p className="text-[10px] text-muted font-black uppercase tracking-widest">Arc Forensic Escrow</p>
+            <a href="https://explorer.testnet.arc.network/address/0x57c8a6466b097B33B3d98Ccd5D9787d426Bfb539" target="_blank" rel="noreferrer"
+              className="text-xs font-mono text-secondary hover:text-emerald-400 transition-colors break-all flex items-center gap-2">
+              0x57c8a...b539 <ExternalLink size={10} />
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

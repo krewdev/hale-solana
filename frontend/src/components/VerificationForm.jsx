@@ -375,19 +375,31 @@ function VerificationForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="space-y-1">
             <p className="text-[10px] text-muted font-bold uppercase">Solana Forensic Engine</p>
-            <p className="text-xs font-mono text-secondary break-all">CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe</p>
+            <a href="https://explorer.solana.com/address/CnwQj2kPHpTbAvJT3ytzekrp7xd4HEtZJuEua9yn9MMe?cluster=devnet" target="_blank" rel="noreferrer"
+              className="text-xs font-mono text-secondary hover:text-cyan-400 transition-colors break-all flex items-center gap-2">
+              CnwQj2k...9yn9MMe <ExternalLink size={10} />
+            </a>
           </div>
           <div className="space-y-1">
             <p className="text-[10px] text-muted font-bold uppercase">Solana HALE Escrow</p>
-            <p className="text-xs font-mono text-secondary break-all">BCKogk1bxSti471AAyrWu3fEBLtbrE3nrwopKZrauEu6</p>
+            <a href="https://explorer.solana.com/address/BCKogk1bxSti471AAyrWu3fEBLtbrE3nrwopKZrauEu6?cluster=devnet" target="_blank" rel="noreferrer"
+              className="text-xs font-mono text-secondary hover:text-cyan-400 transition-colors break-all flex items-center gap-2">
+              BCKogk1...rauEu6 <ExternalLink size={10} />
+            </a>
           </div>
           <div className="space-y-1">
             <p className="text-[10px] text-muted font-bold uppercase">Arc Vault Factory</p>
-            <p className="text-xs font-mono text-secondary break-all">0x4059fDf0bd9b48F4864cB3949A3c5892df0C2e70</p>
+            <a href="https://explorer.testnet.arc.network/address/0x4059fDf0bd9b48F4864cB3949A3c5892df0C2e70" target="_blank" rel="noreferrer"
+              className="text-xs font-mono text-secondary hover:text-emerald-400 transition-colors break-all flex items-center gap-2">
+              0x4059f...2e70 <ExternalLink size={10} />
+            </a>
           </div>
           <div className="space-y-1">
             <p className="text-[10px] text-muted font-bold uppercase">Arc Forensic Escrow</p>
-            <p className="text-xs font-mono text-secondary break-all">0x57c8a6466b097B33B3d98Ccd5D9787d426Bfb539</p>
+            <a href="https://explorer.testnet.arc.network/address/0x57c8a6466b097B33B3d98Ccd5D9787d426Bfb539" target="_blank" rel="noreferrer"
+              className="text-xs font-mono text-secondary hover:text-emerald-400 transition-colors break-all flex items-center gap-2">
+              0x57c8a...b539 <ExternalLink size={10} />
+            </a>
           </div>
         </div>
       </div>
