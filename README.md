@@ -1,11 +1,12 @@
 # HALE Oracle
 
 ## 🏆 Hackathon Submission
-[![Hale Presentation](assets/presentation_thumbnail.png)](https://docs.google.com/videos/d/13sBWXuuN0jveXy57nKFmNNAl4oi0zJ0a2Vrs_f9xHEY/view)
+[![Hale Presentation](assets/presentation_thumbnail.png)](https://youtu.be/wbz-zpD0dNc)
 <p align="center"><i>▶️ Click the image above to watch the HALE Presentation Video</i></p>
 
 - **Live Demo**: [https://hale-oracle.vercel.app](https://hale-oracle.vercel.app)
 - **Colosseum Project**: [View Submission](https://colosseum.com/agent-hackathon/projects/hale-hyper-accountable-ledger-engine)
+- **Strategic Partner**: [Clawbet](https://clawbet.com) (AI-Powered Prediction Markets)
 
 A production-ready system that uses Google Gemini 2.0/2.5 AI as an autonomous forensic auditor to verify digital deliveries against smart contract terms on the Circle Arc blockchain. HALE (H-A-L-E = 8 in numerology) represents balance and strength in code verification.
 
