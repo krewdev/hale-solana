@@ -1,0 +1,74 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "HaleIntent",
+    "description": "Standardized schema for committing agentic intent to the HALE Oracle",
+    "type": "object",
+    "required": [
+        "version",
+        "category",
+        "details"
+    ],
+    "properties": {
+        "version": {
+            "type": "string",
+            "enum": [
+                "1.0.0"
+            ]
+        },
+        "agent_id": {
+            "type": "string",
+            "description": "Unique identifier for the agent (Solana Pubkey or Colosseum ID)"
+        },
+        "category": {
+            "type": "string",
+            "enum": [
+                "SWAP",
+                "TRANSFER",
+                "EXECUTION",
+                "GAMING",
+                "TREASURY"
+            ]
+        },
+        "intent_hash": {
+            "type": "string",
+            "pattern": "^0x[a-fA-F0-9]{64}$",
+            "description": "SHA-256 hash of the canonically serialized 'details' object"
+        },
+        "details": {
+            "type": "object",
+            "required": [
+                "description",
+                "parameters"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "parameters": {
+                    "type": "object",
+                    "description": "Arbitrary key-value pairs representing the execution parameters"
+                }
+            }
+        },
+        "metadata": {
+            "type": "object",
+            "properties": {
+                "reasoning_pointer": {
+                    "type": "string",
+                    "description": "Link to off-chain reasoning (AXIOM CID, IPFS hash, etc.)"
+                },
+                "timestamp": {
+                    "type": "integer"
+                },
+                "source": {
+                    "type": "string",
+                    "enum": [
+                        "colosseum",
+                        "mainnet",
+                        "devnet"
+                    ]
+                }
+            }
+        }
+    }
+}
